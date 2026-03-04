@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>Liga Tenis Deportiva 2026-27</title>
+  <style>
+    :root{
+      --bg:#070A13; --card:#121C3A; --line:rgba(255,255,255,.10);
+      --muted:#9bb0da; --text:#eef2ff; --accent:#7c5cff;
+      --ok:#35d07f; --warn:#ffcc66; --bad:#ff6b6b;
+      --shadow:0 12px 30px rgba(0,0,0,.35);
+      --r:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:radial-gradient(1200px 600px at 20% -10%, rgba(124,92,255,.25), transparent 60%),
+                 radial-gradient(1000px 500px at 95% 0%, rgba(53,208,127,.18), transparent 55%),
+                 linear-gradient(180deg,#070A13,#050711);
+    }
+    header{
+      position:sticky; top:0; z-index:10;
+      background:rgba(7,10,19,.92);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .wrap{max-width:1200px;margin:0 auto;padding:14px 14px 16px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{margin:0;font-size:16px}
+    .sub{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.3}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);font-weight:900;font-size:12px}
+    .badge b{color:var(--text)}
+    main{max-width:1200px;margin:0 auto;padding:14px;display:grid;gap:14px}
+    .card{
+      background:rgba(18,28,58,.86);
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card h2{
+      margin:0;padding:12px 14px;
+      font-size:13px;letter-spacing:.2px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .card h2 small{color:var(--muted);font-weight:950}
+    .pad{padding:14px}
+    .tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .tab{
+      padding:9px 12px;border-radius:12px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--text); font-weight:950; font-size:13px;
+      cursor:pointer;
+    }
+    .tab.active{background:rgba(124,92,255,.18);border-color:rgba(124,92,255,.55)}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} .grid2{grid-template-columns:1fr} }
+    label{display:block;font-size:12px;color:var(--muted);margin:6px 0 6px}
+    select,input{
+      width:100%; padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      outline:none;
+    }
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:9px 8px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top}
+    th{color:var(--muted);font-weight:950;text-align:left}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    .status{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:3px 8px;border-radius:999px;font-size:12px;
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--muted);
+    }
+    .status.ok{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.08)}
+    .status.pending{color:var(--warn);border-color:rgba(255,204,102,.35);background:rgba(255,204,102,.08)}
+    .controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+    @media (max-width: 700px){ .controls{grid-template-columns:1fr} }
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button{
+      cursor:pointer;
+      padding:10px 12px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(124,92,255,.22);
+      color:var(--text);
+      font-weight:950;
+    }
+    button.secondary{background:transparent}
+    .hint{color:var(--muted);font-size:12px;line-height:1.35;margin-top:10px}
+    .kpis{display:flex;gap:10px;flex-wrap:wrap}
+    .kpi{padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.05);min-width:160px}
+    .kpi .k{color:var(--muted);font-size:11px;font-weight:950}
+    .kpi .v{font-size:18px;font-weight:1000;margin-top:6px}
+    .kpi .s{color:var(--muted);font-size:12px;margin-top:4px}
+
+    /* ===== Compact calendar ===== */
+    .calWrap{display:grid;gap:10px}
+    .calHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .monthTitle{font-weight:1000}
+    .calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .dow{color:var(--muted);font-size:10.5px;font-weight:950;padding:0 2px}
+    .day{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      border-radius:12px;
+      padding:7px;
+      min-height:72px; /* smaller */
+      display:flex;flex-direction:column;gap:5px;
+    }
+    .day .n{font-weight:1000;font-size:11px;color:var(--muted);line-height:1}
+    .events{display:flex;flex-direction:column;gap:5px;overflow:auto;max-height:54px; padding-right:2px}
+    .evt{
+      border-left:3px solid rgba(124,92,255,.8);
+      padding:4px 6px;
+      border-radius:10px;
+      background:rgba(124,92,255,.10);
+      font-size:11px;
+      line-height:1.15;
+    }
+    .evt .t{color:var(--muted);font-size:10px;font-weight:950}
+    .evt.done{border-left-color:rgba(53,208,127,.8);background:rgba(53,208,127,.08)}
+    .evt.pending{border-left-color:rgba(255,204,102,.8);background:rgba(255,204,102,.08)}
+    .evt b{font-weight:950}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1 style="display:flex;align-items:center;gap:10px"><img src="logo.png" style="height:40px">Liga Tenis Deportiva 2026-27</h1>
+        <div class="sub">
+          Tanteo: juegos por set (ej: <b>6-4</b> / <b>7-5</b>). Se juegan <b>2 sets</b>.
+          Clasificación estilo ATP: <b>Sets</b> + desempates por <b>dif sets</b> y <b>dif juegos</b>.
+        </div>
+      </div>
+      <div class="badge">💾 <span id="storeMode">Guardado local</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2><span>⚙️ División y filtros</span><small id="meta"></small></h2>
+    <div class="pad">
+      <div class="tabs" id="tabs"></div>
+
+      <div class="controls">
+        <div>
+          <label>Filtrar por jugador</label>
+          <select id="playerFilter"></select>
+        </div>
+        <div>
+          <label>Mostrar</label>
+          <select id="viewMode">
+            <option value="all">Todos los partidos</option>
+            <option value="pending">Solo pendientes</option>
+            <option value="done">Solo con resultado</option>
+          </select>
+        </div>
+        <div>
+          <label>Mes</label>
+          <select id="monthPick">
+            <option value="2026-03">Marzo 2026</option>
+            <option value="2026-04">Abril 2026</option>
+            <option value="both">Marzo + Abril</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="hint">Calendario compacto: si eliges “Marzo + Abril” se verán los dos meses (más largo).</div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2><span>📅 Calendario visual mensual</span><small id="calSmall">Compacto</small></h2>
+      <div class="pad calWrap" id="calendarWrap"></div>
+    </div>
+
+    <div class="card">
+      <h2><span>📊 Estadísticas del jugador</span><small id="playerStatsTitle">Selecciona un jugador</small></h2>
+      <div class="pad">
+        <div class="kpis" id="kpis"></div>
+        <div class="hint" id="nextMatches"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid" id="listSection">
+    <div class="card">
+      <h2><span>📅 Cruces (lista)</span><small id="matchCount"></small></h2>
+      <div class="pad">
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Partido</th><th>Resultado</th><th>Estado</th></tr>
+          </thead>
+          <tbody id="matchesTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span>🧾 Subir / editar resultado</span><small id="editHint"></small></h2>
+      <div class="pad">
+        <label>Selecciona partido</label>
+        <select id="matchSelect"></select>
+
+        <div class="split" style="margin-top:10px">
+          <div>
+            <label>Set 1 (juegos)</label>
+            <div class="split">
+              <input id="s1a" type="number" min="0" max="7" placeholder="A"/>
+              <input id="s1b" type="number" min="0" max="7" placeholder="B"/>
+            </div>
+          </div>
+          <div>
+            <label>Set 2 (juegos)</label>
+            <div class="split">
+              <input id="s2a" type="number" min="0" max="7" placeholder="A"/>
+              <input id="s2b" type="number" min="0" max="7" placeholder="B"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="btns">
+          <button id="saveBtn">Guardar</button>
+          <button class="secondary" id="clearBtn">Borrar</button>
+          <button class="secondary" id="resetBtn">Reset TOTAL</button>
+        </div>
+
+        <div class="hint">Sets típicos: <b>6-0…6-4</b>, <b>7-5</b>, <b>7-6</b>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span>🏆 Clasificación provisional (estilo ATP)</span><small id="standHint"></small></h2>
+    <div class="pad">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Jugador</th>
+            <th>PTS (Sets)</th>
+            <th>PJ</th>
+            <th>SF</th><th>SA</th><th>Dif Sets</th>
+            <th>J+</th><th>J−</th><th>Dif Juegos</th>
+          </tr>
+        </thead>
+        <tbody id="standingsTbody"></tbody>
+      </table>
+      <div class="hint">Orden: PTS (sets), Dif Sets, Dif Juegos, Juegos a favor, nombre.</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const LEAGUE = {
+  "2ª División": {
+    hourLabel: "19:00",
+    players: [
+      "Javier Martínez Sainz","Jaime Herrera Sánchez","Jorge Grande Tabares","María Millanes",
+      "Bosco Millanes","Andrés González Fernández","Pablo Muñiz Sendino","Samuel González Fernández",
+    ],
+    matches: [
+      { dt:"2026-03-02 19:00", a:"Javier Martínez Sainz", b:"Jaime Herrera Sánchez" },
+      { dt:"2026-03-03 19:00", a:"Jaime Herrera Sánchez", b:"Jorge Grande Tabares" },
+      { dt:"2026-03-04 19:00", a:"Jorge Grande Tabares", b:"María Millanes" },
+      { dt:"2026-03-05 19:00", a:"María Millanes", b:"Bosco Millanes" },
+      { dt:"2026-03-09 19:00", a:"Bosco Millanes", b:"Andrés González Fernández" },
+      { dt:"2026-03-10 19:00", a:"Andrés González Fernández", b:"Pablo Muñiz Sendino" },
+      { dt:"2026-03-11 19:00", a:"Pablo Muñiz Sendino", b:"Samuel González Fernández" },
+      { dt:"2026-03-12 19:00", a:"Javier Martínez Sainz", b:"Jorge Grande Tabares" },
+      { dt:"2026-03-16 19:00", a:"Jaime Herrera Sánchez", b:"María Millanes" },
+      { dt:"2026-03-17 19:00", a:"Jorge Grande Tabares", b:"Bosco Millanes" },
+      { dt:"2026-03-18 19:00", a:"María Millanes", b:"Andrés González Fernández" },
+      { dt:"2026-03-19 19:00", a:"Bosco Millanes", b:"Pablo Muñiz Sendino" },
+      { dt:"2026-03-23 19:00", a:"Andrés González Fernández", b:"Samuel González Fernández" },
+      { dt:"2026-03-24 19:00", a:"Javier Martínez Sainz", b:"María Millanes" },
+      { dt:"2026-03-25 19:00", a:"Jaime Herrera Sánchez", b:"Bosco Millanes" },
+      { dt:"2026-03-26 19:00", a:"Jorge Grande Tabares", b:"Andrés González Fernández" },
+      { dt:"2026-03-30 19:00", a:"María Millanes", b:"Pablo Muñiz Sendino" },
+      { dt:"2026-03-31 19:00", a:"Bosco Millanes", b:"Samuel González Fernández" },
+      { dt:"2026-04-07 19:00", a:"Jaime Herrera Sánchez", b:"Andrés González Fernández" },
+      { dt:"2026-04-08 19:00", a:"Jorge Grande Tabares", b:"Pablo Muñiz Sendino" },
+      { dt:"2026-04-09 19:00", a:"María Millanes", b:"Samuel González Fernández" },
+      { dt:"2026-04-14 19:00", a:"Jaime Herrera Sánchez", b:"Pablo Muñiz Sendino" },
+      { dt:"2026-04-15 19:00", a:"Jorge Grande Tabares", b:"Samuel González Fernández" },
+      { dt:"2026-04-16 19:00", a:"Javier Martínez Sainz", b:"Pablo Muñiz Sendino" },
+      { dt:"2026-04-20 19:00", a:"Jaime Herrera Sánchez", b:"Samuel González Fernández" },
+      { dt:"2026-04-21 19:00", a:"Javier Martínez Sainz", b:"Samuel González Fernández" },
+    ],
+  },
+  "1ª División": {
+    hourLabel: "20:00",
+    players: [
+      "Marco Gutierrez","Alejandro Yi","Enzo","Gonzalo Fernández",
+      "Iñigo De Las Heras Velazquez","Nuño Estéfano Hernaiz","Mario Garcia Blanco","Javier Grande Tabares",
+    ],
+    matches: [
+      { dt:"2026-03-02 20:00", a:"Marco Gutierrez", b:"Alejandro Yi" },
+      { dt:"2026-03-03 20:00", a:"Alejandro Yi", b:"Enzo" },
+      { dt:"2026-03-04 20:00", a:"Enzo", b:"Gonzalo Fernández" },
+      { dt:"2026-03-05 20:00", a:"Gonzalo Fernández", b:"Iñigo De Las Heras Velazquez" },
+      { dt:"2026-03-09 20:00", a:"Iñigo De Las Heras Velazquez", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-03-10 20:00", a:"Nuño Estéfano Hernaiz", b:"Mario Garcia Blanco" },
+      { dt:"2026-03-11 20:00", a:"Mario Garcia Blanco", b:"Javier Grande Tabares" },
+      { dt:"2026-03-12 20:00", a:"Marco Gutierrez", b:"Enzo" },
+      { dt:"2026-03-16 20:00", a:"Alejandro Yi", b:"Gonzalo Fernández" },
+      { dt:"2026-03-17 20:00", a:"Enzo", b:"Iñigo De Las Heras Velazquez" },
+      { dt:"2026-03-18 20:00", a:"Gonzalo Fernández", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-03-19 20:00", a:"Iñigo De Las Heras Velazquez", b:"Mario Garcia Blanco" },
+      { dt:"2026-03-23 20:00", a:"Nuño Estéfano Hernaiz", b:"Javier Grande Tabares" },
+      { dt:"2026-03-24 20:00", a:"Marco Gutierrez", b:"Gonzalo Fernández" },
+      { dt:"2026-03-25 20:00", a:"Alejandro Yi", b:"Iñigo De Las Heras Velazquez" },
+      { dt:"2026-03-26 20:00", a:"Enzo", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-03-30 20:00", a:"Gonzalo Fernández", b:"Javier Grande Tabares" },
+      { dt:"2026-03-31 20:00", a:"Iñigo De Las Heras Velazquez", b:"Javier Grande Tabares" },
+      { dt:"2026-04-01 20:00", a:"Marco Gutierrez", b:"Iñigo De Las Heras Velazquez" },
+      { dt:"2026-04-07 20:00", a:"Alejandro Yi", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-04-08 20:00", a:"Enzo", b:"Javier Grande Tabares" },
+      { dt:"2026-04-09 20:00", a:"Gonzalo Fernández", b:"Javier Grande Tabares" },
+      { dt:"2026-04-13 20:00", a:"Marco Gutierrez", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-04-14 20:00", a:"Alejandro Yi", b:"Mario Garcia Blanco" },
+      { dt:"2026-04-15 20:00", a:"Enzo", b:"Mario Garcia Blanco" },
+      { dt:"2026-04-16 20:00", a:"Marco Gutierrez", b:"Mario Garcia Blanco" },
+      { dt:"2026-04-20 20:00", a:"Alejandro Yi", b:"Javier Grande Tabares" },
+      { dt:"2026-04-21 20:00", a:"Marco Gutierrez", b:"Javier Grande Tabares" },
+    ],
+  },
+};
+
+const STORAGE_KEY = "liga_tenis_ultimate_compacto_v1";
+const state = {
+  division: Object.keys(LEAGUE)[0],
+  filterPlayer: "__ALL__",
+  viewMode: "all",
+  monthPick: "2026-03",
+  results: loadResults()
+};
+
+function loadResults(){
+  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
+  catch(e){ return {}; }
+}
+function saveResults(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.results));
+}
+function ensureBucket(){
+  if(!state.results[state.division]) state.results[state.division] = {};
+}
+function getDiv(){ return LEAGUE[state.division]; }
+function matchId(m){ return `${state.division}__${m.dt}__${m.a}__${m.b}`; }
+
+function parseDT(dtStr){
+  const [d,t] = dtStr.split(" ");
+  const [Y,M,D] = d.split("-").map(Number);
+  const [h,min] = t.split(":").map(Number);
+  return new Date(Y, M-1, D, h, min, 0, 0);
+}
+function fmtDate(dtStr){
+  const d = parseDT(dtStr);
+  const wd = d.toLocaleDateString("es-ES", { weekday:"long" });
+  const dd = d.toLocaleDateString("es-ES", { day:"2-digit", month:"2-digit", year:"numeric" });
+  const hh = d.toLocaleTimeString("es-ES", { hour:"2-digit", minute:"2-digit" });
+  return `${wd.charAt(0).toUpperCase()+wd.slice(1)} ${dd} · ${hh}`;
+}
+function validSet(gA, gB){
+  if(!Number.isInteger(gA) || !Number.isInteger(gB)) return false;
+  if(gA<0 || gB<0) return false;
+  if(gA===gB) return false;
+  if(gA>7 || gB>7) return false;
+  return true;
+}
+
+function isMatchVisible(m){
+  ensureBucket();
+  const res = state.results[state.division];
+  const r = res[matchId(m)];
+  const has = !!r;
+
+  if(state.filterPlayer !== "__ALL__"){
+    if(m.a !== state.filterPlayer && m.b !== state.filterPlayer) return false;
+  }
+  if(state.viewMode === "pending" && has) return false;
+  if(state.viewMode === "done" && !has) return false;
+  return true;
+}
+function visibleMatches(){ return getDiv().matches.filter(isMatchVisible); }
+
+function computeStandings(){
+  const { players, matches } = getDiv();
+  ensureBucket();
+  const res = state.results[state.division];
+
+  const t = {};
+  for(const p of players){
+    t[p] = { player:p, pts:0, pj:0, sf:0, sa:0, gf:0, ga:0 };
+  }
+
+  for(const m of matches){
+    const r = res[matchId(m)];
+    if(!r) continue;
+    const A=m.a, B=m.b;
+    const s1a=r.s1a, s1b=r.s1b, s2a=r.s2a, s2b=r.s2b;
+
+    let setsA=0, setsB=0;
+    if(s1a>s1b) setsA++; else setsB++;
+    if(s2a>s2b) setsA++; else setsB++;
+
+    t[A].pj++; t[B].pj++;
+    t[A].pts += setsA; t[B].pts += setsB;
+
+    t[A].sf += setsA; t[A].sa += setsB;
+    t[B].sf += setsB; t[B].sa += setsA;
+
+    t[A].gf += (s1a+s2a); t[A].ga += (s1b+s2b);
+    t[B].gf += (s1b+s2b); t[B].ga += (s1a+s2a);
+  }
+
+  const arr = Object.values(t).map(x => ({...x, difSets: x.sf-x.sa, difGames: x.gf-x.ga }));
+  arr.sort((u,v)=>
+    (v.pts-u.pts) ||
+    (v.difSets-u.difSets) ||
+    (v.difGames-u.difGames) ||
+    (v.gf-u.gf) ||
+    u.player.localeCompare(v.player, "es")
+  );
+  return arr;
+}
+
+function playerStats(player){
+  if(!player || player==="__ALL__") return null;
+  ensureBucket();
+  const res = state.results[state.division];
+
+  let pj=0, wins=0, losses=0, setsW=0, setsL=0, gamesW=0, gamesL=0;
+  const upcoming = [];
+
+  for(const m of getDiv().matches){
+    const involved = (m.a===player || m.b===player);
+    if(!involved) continue;
+
+    const r = res[matchId(m)];
+    if(!r){ upcoming.push(m); continue; }
+
+    pj++;
+    const isA = (m.a===player);
+    const s1p = isA ? r.s1a : r.s1b;
+    const s1o = isA ? r.s1b : r.s1a;
+    const s2p = isA ? r.s2a : r.s2b;
+    const s2o = isA ? r.s2b : r.s2a;
+
+    gamesW += (s1p+s2p);
+    gamesL += (s1o+s2o);
+
+    let sw=0, sl=0;
+    if(s1p>s1o) sw++; else sl++;
+    if(s2p>s2o) sw++; else sl++;
+    setsW += sw; setsL += sl;
+
+    if(sw>sl) wins++; else if(sl>sw) losses++;
+  }
+
+  upcoming.sort((a,b)=>parseDT(a.dt)-parseDT(b.dt));
+  const winRate = pj ? Math.round((wins/pj)*100) : 0;
+  return { player, pj, wins, losses, setsW, setsL, gamesW, gamesL, difGames: gamesW-gamesL, winRate, upcoming: upcoming.slice(0,5) };
+}
+
+/* Render */
+function renderTabs(){
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  for(const div of Object.keys(LEAGUE)){
+    const b = document.createElement("button");
+    b.className = "tab" + (div===state.division ? " active" : "");
+    b.textContent = div;
+    b.onclick = () => { state.division = div; renderAll(); };
+    tabs.appendChild(b);
+  }
+}
+function renderFilters(){
+  const pf = document.getElementById("playerFilter");
+  pf.innerHTML = "";
+  const all = document.createElement("option");
+  all.value="__ALL__"; all.textContent="(Todos)";
+  pf.appendChild(all);
+  for(const p of getDiv().players){
+    const o=document.createElement("option");
+    o.value=p; o.textContent=p;
+    pf.appendChild(o);
+  }
+  pf.value = state.filterPlayer;
+  pf.onchange = () => { state.filterPlayer = pf.value; renderAll(); };
+
+  const vm = document.getElementById("viewMode");
+  vm.value = state.viewMode;
+  vm.onchange = () => { state.viewMode = vm.value; renderAll(); };
+
+  const mp = document.getElementById("monthPick");
+  mp.value = state.monthPick;
+  mp.onchange = () => { state.monthPick = mp.value; renderCalendar(); };
+}
+function renderMeta(){
+  document.getElementById("meta").textContent = `Hora base: ${getDiv().hourLabel} · ${getDiv().players.length} jugadores · ${getDiv().matches.length} partidos`;
+}
+
+function renderList(){
+  const list = visibleMatches();
+  ensureBucket();
+  const res = state.results[state.division];
+  document.getElementById("matchCount").textContent = `${list.length} visibles`;
+
+  const tb = document.getElementById("matchesTbody");
+  tb.innerHTML = "";
+  for(const m of list){
+    const r = res[matchId(m)];
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${fmtDate(m.dt)}</td>
+      <td><b>${m.a}</b> <span class="mono">vs</span> <b>${m.b}</b></td>
+      <td>${r ? `${r.s1a}-${r.s1b} / ${r.s2a}-${r.s2b}` : "—"}</td>
+      <td><span class="status ${r ? "ok":"pending"}">${r ? "✅ Subido":"⏳ Pendiente"}</span></td>
+    `;
+    tb.appendChild(tr);
+  }
+}
+function renderMatchSelect(){
+  const sel = document.getElementById("matchSelect");
+  const { matches } = getDiv();
+  ensureBucket();
+  const res = state.results[state.division];
+  sel.innerHTML = "";
+  matches.forEach((m, idx)=>{
+    const r = res[matchId(m)];
+    const opt = document.createElement("option");
+    opt.value = String(idx);
+    opt.textContent = `${fmtDate(m.dt)} — ${m.a} vs ${m.b}${r ? ` (${r.s1a}-${r.s1b}/${r.s2a}-${r.s2b})` : ""}`;
+    sel.appendChild(opt);
+  });
+  sel.onchange = syncFormFromSelected;
+  syncFormFromSelected();
+}
+function syncFormFromSelected(){
+  const idx = Number(document.getElementById("matchSelect").value || 0);
+  const m = getDiv().matches[idx];
+  ensureBucket();
+  const res = state.results[state.division];
+  const r = res[matchId(m)];
+  document.getElementById("s1a").value = r ? r.s1a : "";
+  document.getElementById("s1b").value = r ? r.s1b : "";
+  document.getElementById("s2a").value = r ? r.s2a : "";
+  document.getElementById("s2b").value = r ? r.s2b : "";
+  document.getElementById("editHint").textContent = `${m.a} vs ${m.b}`;
+}
+function renderStandings(){
+  const s = computeStandings();
+  const tb = document.getElementById("standingsTbody");
+  tb.innerHTML = "";
+  const played = s.reduce((acc,x)=>acc+x.pj,0)/2;
+  document.getElementById("standHint").textContent = `Partidos con resultado: ${played}`;
+  s.forEach((x,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td><td><b>${x.player}</b></td>
+      <td><b>${x.pts}</b></td><td>${x.pj}</td>
+      <td>${x.sf}</td><td>${x.sa}</td><td>${x.difSets}</td>
+      <td>${x.gf}</td><td>${x.ga}</td><td>${x.difGames}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+function renderPlayerStats(){
+  const title = document.getElementById("playerStatsTitle");
+  const box = document.getElementById("kpis");
+  const next = document.getElementById("nextMatches");
+  const p = state.filterPlayer !== "__ALL__" ? state.filterPlayer : null;
+  const stats = playerStats(p);
+  box.innerHTML = ""; next.innerHTML = "";
+
+  if(!stats){
+    title.textContent = "Selecciona un jugador en el filtro";
+    next.innerHTML = `<span class="muted">Elige un jugador para ver estadísticas y próximos partidos.</span>`;
+    return;
+  }
+  title.textContent = stats.player;
+
+  const k = (label, value, sub="") => {
+    const d = document.createElement("div");
+    d.className = "kpi";
+    d.innerHTML = `<div class="k">${label}</div><div class="v">${value}</div><div class="s">${sub}</div>`;
+    return d;
+  };
+  box.appendChild(k("Partidos jugados", stats.pj, `${stats.wins}V · ${stats.losses}D · ${stats.winRate}%`));
+  box.appendChild(k("Sets", `${stats.setsW}-${stats.setsL}`, "Ganados-Perdidos"));
+  box.appendChild(k("Juegos", `${stats.gamesW}-${stats.gamesL}`, `Dif ${stats.difGames}`));
+
+  if(stats.upcoming.length){
+    const lines = stats.upcoming.map(m => `• ${fmtDate(m.dt)} — ${m.a} vs ${m.b}`).join("<br/>");
+    next.innerHTML = `<b>Próximos partidos:</b><br/>${lines}`;
+  }else{
+    next.innerHTML = `<b>Próximos partidos:</b> <span class="muted">No quedan.</span>`;
+  }
+}
+
+/* Calendar */
+function monthName(d){
+  return d.toLocaleDateString("es-ES", { month:"long", year:"numeric" }).replace(/^./, c=>c.toUpperCase());
+}
+function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
+function dowMon(date){ const x=date.getDay(); return x===0 ? 7 : x; }
+
+function renderMonthCalendar(year, monthIndex){
+  const first = new Date(year, monthIndex, 1);
+  const last = endOfMonth(first);
+
+  const gridStart = new Date(first);
+  gridStart.setDate(first.getDate() - (dowMon(first)-1));
+  const gridEnd = new Date(last);
+  gridEnd.setDate(last.getDate() + (7 - dowMon(last)));
+
+  ensureBucket();
+  const res = state.results[state.division];
+  const ev = {};
+  for(const m of getDiv().matches){
+    if(!isMatchVisible(m)) continue;
+    const d = m.dt.split(" ")[0];
+    if(!ev[d]) ev[d]=[];
+    ev[d].push({ m, r: res[matchId(m)] });
+  }
+
+  const section = document.createElement("div");
+  section.className = "calWrap";
+
+  const head = document.createElement("div");
+  head.className = "calHeader";
+  head.innerHTML = `<div class="monthTitle">${monthName(first)}</div><div class="muted">Filtro: ${state.filterPlayer==="__ALL__" ? "Todos" : state.filterPlayer}</div>`;
+  section.appendChild(head);
+
+  const dows = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+  const dowRow = document.createElement("div");
+  dowRow.className = "calGrid";
+  dows.forEach(x=>{
+    const s=document.createElement("div");
+    s.className="dow";
+    s.textContent=x;
+    dowRow.appendChild(s);
+  });
+  section.appendChild(dowRow);
+
+  const grid = document.createElement("div");
+  grid.className = "calGrid";
+
+  for(let d = new Date(gridStart); d <= gridEnd; d.setDate(d.getDate()+1)){
+    const cell = document.createElement("div");
+    cell.className = "day";
+    const inMonth = d.getMonth() === monthIndex;
+    cell.style.opacity = inMonth ? "1" : ".40";
+
+    const num = document.createElement("div");
+    num.className = "n";
+    num.textContent = d.getDate();
+    cell.appendChild(num);
+
+    const key = d.toISOString().slice(0,10);
+    const items = (ev[key] || []).slice().sort((a,b)=>parseDT(a.m.dt)-parseDT(b.m.dt));
+
+    const list = document.createElement("div");
+    list.className = "events";
+
+    items.forEach(({m,r})=>{
+      const e = document.createElement("div");
+      e.className = "evt " + (r ? "done" : "pending");
+      const time = m.dt.split(" ")[1];
+      const score = r ? ` · <b>${r.s1a}-${r.s1b}</b> / <b>${r.s2a}-${r.s2b}</b>` : "";
+      e.innerHTML = `<div class="t">${time}</div><div><b>${m.a}</b> vs <b>${m.b}</b>${score}</div>`;
+      list.appendChild(e);
+    });
+
+    cell.appendChild(list);
+    grid.appendChild(cell);
+  }
+
+  section.appendChild(grid);
+  return section;
+}
+
+function renderCalendar(){
+  const wrap = document.getElementById("calendarWrap");
+  wrap.innerHTML = "";
+  if(state.monthPick === "2026-03"){
+    wrap.appendChild(renderMonthCalendar(2026, 2));
+  }else if(state.monthPick === "2026-04"){
+    wrap.appendChild(renderMonthCalendar(2026, 3));
+  }else{
+    wrap.appendChild(renderMonthCalendar(2026, 2));
+    wrap.appendChild(renderMonthCalendar(2026, 3));
+  }
+}
+
+/* Actions */
+function onSave(){
+  const idx = Number(document.getElementById("matchSelect").value || 0);
+  const m = getDiv().matches[idx];
+
+  const s1a = Number(document.getElementById("s1a").value);
+  const s1b = Number(document.getElementById("s1b").value);
+  const s2a = Number(document.getElementById("s2a").value);
+  const s2b = Number(document.getElementById("s2b").value);
+
+  if(!validSet(s1a,s1b) || !validSet(s2a,s2b)){
+    alert("Revisa los sets: deben ser enteros, distintos, entre 0 y 7.");
+    return;
+  }
+  ensureBucket();
+  state.results[state.division][matchId(m)] = { s1a, s1b, s2a, s2b, updatedAt: new Date().toISOString() };
+  saveResults();
+  renderAll();
+}
+function onClear(){
+  const idx = Number(document.getElementById("matchSelect").value || 0);
+  const m = getDiv().matches[idx];
+  if(!confirm("¿Borrar el resultado de este partido?")) return;
+  ensureBucket();
+  delete state.results[state.division][matchId(m)];
+  saveResults();
+  renderAll();
+}
+function onReset(){
+  if(!confirm("Esto borrará TODOS los resultados (1ª y 2ª) en este dispositivo. ¿Seguro?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state.results = {};
+  renderAll();
+}
+function wire(){
+  document.getElementById("saveBtn").onclick = onSave;
+  document.getElementById("clearBtn").onclick = onClear;
+  document.getElementById("resetBtn").onclick = onReset;
+}
+function renderAll(){
+  ensureBucket();
+  renderTabs();
+  renderFilters();
+  renderMeta();
+  renderCalendar();
+  renderList();
+  renderMatchSelect();
+  renderStandings();
+  renderPlayerStats();
+}
+wire();
+renderAll();
+</script>
+</body>
+</html>
