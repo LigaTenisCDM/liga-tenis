@@ -12,14 +12,17 @@ jobs:
   apply:
     if: contains(github.event.issue.labels.*.name, 'resultado')
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Update results.json
+      - name: Procesar resultado
         run: |
           node - <<'NODE'
           const fs = require('fs');
@@ -33,38 +36,72 @@ jobs:
           }
 
           const matchId = field("Match ID");
+          const action  = (field("Action") || "").toLowerCase();
+
+          const path = "results.json";
+          let data = {};
+
+          if(fs.existsSync(path)){
+            data = JSON.parse(fs.readFileSync(path,'utf8') || "{}");
+          }
+
+          if(!matchId){
+            throw new Error("Falta Match ID");
+          }
+
+          // BORRAR RESULTADO
+          if(action === "delete"){
+            delete data[matchId];
+
+            fs.writeFileSync(path, JSON.stringify(data, null, 2));
+
+            console.log("Resultado eliminado:", matchId);
+            process.exit(0);
+          }
+
+          // GUARDAR RESULTADO
           const set1 = field("Set 1");
           const set2 = field("Set 2");
 
-          if(!matchId) throw new Error("Falta Match ID");
-          if(!/^[0-7]-[0-7]$/.test(set1)) throw new Error("Set 1 inválido");
-          if(!/^[0-7]-[0-7]$/.test(set2)) throw new Error("Set 2 inválido");
+          if(!/^[0-7]-[0-7]$/.test(set1)){
+            throw new Error("Set 1 inválido");
+          }
+
+          if(!/^[0-7]-[0-7]$/.test(set2)){
+            throw new Error("Set 2 inválido");
+          }
 
           const [s1a,s1b] = set1.split('-').map(Number);
           const [s2a,s2b] = set2.split('-').map(Number);
 
-          const path = "results.json";
-          let data = {};
-          if(fs.existsSync(path)) data = JSON.parse(fs.readFileSync(path,'utf8') || "{}");
-
-          data[matchId] = { s1a, s1b, s2a, s2b, updatedAt: new Date().toISOString() };
+          data[matchId] = {
+            s1a,
+            s1b,
+            s2a,
+            s2b,
+            updatedAt: new Date().toISOString()
+          };
 
           fs.writeFileSync(path, JSON.stringify(data, null, 2));
-          console.log("OK");
+
+          console.log("Resultado guardado:", matchId);
           NODE
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
 
-      - name: Commit & push
+      - name: Commit cambios
         run: |
           git config user.name "liga-bot"
           git config user.email "actions@users.noreply.github.com"
+
           git add results.json
-          git commit -m "Actualizar results.json desde issue #${{ github.event.issue.number }}" || exit 0
+          git commit -m "Actualizar resultado desde issue #${{ github.event.issue.number }}" || exit 0
           git push
 
-      - name: Close issue
+      - name: Cerrar issue
         uses: peter-evans/close-issue@v3
         with:
           issue-number: ${{ github.event.issue.number }}
-          comment: "✅ Resultado aplicado. La web ya muestra la clasificación actualizada."
+          comment: |
+            ✅ Resultado aplicado correctamente.
+            La web se actualizará automáticamente.
