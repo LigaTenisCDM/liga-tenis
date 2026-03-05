@@ -1,0 +1,40 @@
+name: Subir resultado
+description: Enviar resultado de un partido
+title: "Resultado: "
+labels: ["resultado"]
+
+body:
+
+  - type: dropdown
+    id: division
+    attributes:
+      label: División
+      options:
+        - 1ª División
+        - 2ª División
+    validations:
+      required: true
+
+  - type: input
+    id: match_id
+    attributes:
+      label: Match ID
+      description: Lo rellena automáticamente la web
+    validations:
+      required: true
+
+  - type: input
+    id: set1
+    attributes:
+      label: Set 1
+      placeholder: "6-4"
+    validations:
+      required: true
+
+  - type: input
+    id: set2
+    attributes:
+      label: Set 2
+      placeholder: "6-3"
+    validations:
+      required: true
