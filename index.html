@@ -334,9 +334,9 @@ const state = {
   filterPlayer: "__ALL__",
   viewMode: "all",
   monthPick: "2026-03",
-  results: {}};
+  results: {}
+};
 
-function loadResults(){ return {}; }
 function saveResults(){ /* sin guardado local */ }
 function ensureBucket(){ if(!state.results[state.division]) state.results[state.division] = {}; }
 function getDiv(){ return LEAGUE[state.division]; }
@@ -438,10 +438,9 @@ function renderStandings(){ const s=computeStandings(); const tb=document.getEle
   const played = s.reduce((acc,x)=>acc+x.pj,0)/2;
   document.getElementById("standHint").textContent = `Partidos con resultado: ${played}`;
   s.forEach((x,i)=>{
-
-  const tr=document.createElement("tr");
-  if(i<2) tr.classList.add("promote");
-  if(i>=s.length-2) tr.classList.add("relegate");
+    const tr=document.createElement("tr");
+    if(i<2) tr.classList.add("promote");
+    if(i>=s.length-2) tr.classList.add("relegate");
     tr.innerHTML = `<td>${i+1}</td><td><b>${x.player}</b></td><td><b>${x.pts}</b></td><td>${x.pj}</td><td>${x.sf}</td><td>${x.sa}</td><td>${x.difSets}</td><td>${x.gf}</td><td>${x.ga}</td><td>${x.difGames}</td>`;
     tb.appendChild(tr);
   });
@@ -470,21 +469,18 @@ function renderMonthCalendar(year, monthIndex){
   const first = new Date(year, monthIndex, 1);
   const last  = endOfMonth(first);
 
-  // Monday on/before first day
   const gridStart = new Date(first);
-  const firstDow = (first.getDay() + 6) % 7; // Mon=0..Sun=6
+  const firstDow = (first.getDay() + 6) % 7;
   gridStart.setDate(first.getDate() - firstDow);
 
-  // Friday on/after last day
   const gridEnd = new Date(last);
   const lastDow = (last.getDay() + 6) % 7;
-  const addToFriday = (4 - lastDow + 7) % 7; // Fri=4
+  const addToFriday = (4 - lastDow + 7) % 7;
   gridEnd.setDate(last.getDate() + addToFriday);
 
   ensureBucket();
   const res = state.results[state.division];
 
-  // index events by YYYY-MM-DD
   const ev = {};
   for(const m of getDiv().matches){
     if(!isMatchVisible(m)) continue;
@@ -551,10 +547,10 @@ function renderMonthCalendar(year, monthIndex){
       td.appendChild(cell);
       tr.appendChild(td);
 
-      d.setDate(d.getDate()+1); // next weekday
+      d.setDate(d.getDate()+1);
     }
 
-    d.setDate(d.getDate()+2); // skip Sat+Sun
+    d.setDate(d.getDate()+2);
     tbody.appendChild(tr);
   }
 
@@ -591,41 +587,65 @@ async function onSave(){
       matchId: matchId(m),
       score: { s1a, s1b, s2a, s2b }
     });
-    await refreshOnlineOnce();
+
+    ensureBucket();
+    state.results[state.division][matchId(m)] = {
+      s1a, s1b, s2a, s2b, updatedAt: new Date().toISOString()
+    };
+
+    renderAll();
+    setTimeout(refreshOnlineOnce, 1500);
     alert("✅ Resultado guardado online.");
   }catch(e){
     alert(e.message || String(e));
   }
 }
+
 async function onClear(){
   const idx = Number(document.getElementById("matchSelect").value || 0);
   const m = getDiv().matches[idx];
 
-  if(!confirm(`¿Borrar el resultado online de:
-
-${m.a} vs ${m.b}
-${m.dt}?`)) return;
+  if(!confirm(`¿Borrar el resultado online de:\n\n${m.a} vs ${m.b}\n${m.dt}?`)) return;
 
   try{
     await workerRequest({
       action: "delete",
       matchId: matchId(m)
     });
-    await refreshOnlineOnce();
+
+    ensureBucket();
+    delete state.results[state.division][matchId(m)];
+
+    renderAll();
+    setTimeout(refreshOnlineOnce, 1500);
     alert("🗑️ Resultado borrado online.");
   }catch(e){
     alert(e.message || String(e));
   }
 }
+
 async function onReset(){
   await refreshOnlineOnce();
   alert("🔄 Actualizado desde GitHub.");
 }
 
+function wire(){
+  document.getElementById("saveBtn").onclick = onSave;
+  document.getElementById("clearBtn").onclick = onClear;
+  document.getElementById("resetBtn").onclick = onReset;
+}
 
-function wire(){ document.getElementById("saveBtn").onclick = onSave; document.getElementById("clearBtn").onclick=onClear; document.getElementById("resetBtn").onclick=onReset; }
-
-function renderAll(){ ensureBucket(); renderTabs(); renderFilters(); renderMeta(); renderCalendar(); renderList(); renderMatchSelect(); renderStandings(); renderPlayerStats(); }
+function renderAll(){
+  ensureBucket();
+  renderTabs();
+  renderFilters();
+  renderMeta();
+  renderCalendar();
+  renderList();
+  renderMatchSelect();
+  renderStandings();
+  renderPlayerStats();
+}
 
 wire();
 renderAll();
