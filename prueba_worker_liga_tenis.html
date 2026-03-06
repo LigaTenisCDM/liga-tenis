@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Prueba Worker Liga Tenis</title>
+  <style>
+    body{font-family:system-ui,Arial,sans-serif;max-width:800px;margin:30px auto;padding:0 16px}
+    input,button,textarea{font:inherit}
+    input,textarea{width:100%;padding:10px;margin:6px 0 12px;box-sizing:border-box}
+    button{padding:10px 14px;margin-right:8px;margin-bottom:8px}
+    pre{background:#111;color:#eee;padding:12px;border-radius:8px;overflow:auto;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <h1>Prueba del Worker</h1>
+  <p>URL del Worker: <code id="u"></code></p>
+
+  <label>Match ID</label>
+  <input id="matchId" value='2ª División__2026-03-02 19:00__Javier Martínez Sainz__Jaime Herrera Sánchez'>
+
+  <label>Score JSON (para guardar)</label>
+  <textarea id="score" rows="4">{"s1a":6,"s1b":4,"s2a":6,"s2b":3}</textarea>
+
+  <div>
+    <button id="readBtn">Leer results.json</button>
+    <button id="saveBtn">Guardar prueba</button>
+    <button id="deleteBtn">Borrar prueba</button>
+  </div>
+
+  <h2>Respuesta</h2>
+  <pre id="out">Esperando prueba...</pre>
+
+<script>
+const WORKER_URL = "https://liga-tenis-api.ligatenisdeportiva.workers.dev";
+document.getElementById("u").textContent = WORKER_URL;
+const out = document.getElementById("out");
+
+async function callWorker(payload){
+  out.textContent = "Cargando...";
+  try{
+    const r = await fetch(WORKER_URL, {
+      method: "POST",
+      mode: "cors",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(payload)
+    });
+    const text = await r.text();
+    out.textContent = "HTTP " + r.status + "\n\n" + text;
+  }catch(e){
+    out.textContent = "ERROR\n\n" + (e && e.message ? e.message : String(e));
+  }
+}
+
+document.getElementById("readBtn").onclick = () => callWorker({action:"read"});
+document.getElementById("saveBtn").onclick = () => {
+  let score;
+  try{ score = JSON.parse(document.getElementById("score").value); }
+  catch(e){ out.textContent = "El JSON del score no es válido."; return; }
+  callWorker({action:"upsert", matchId: document.getElementById("matchId").value, score});
+};
+document.getElementById("deleteBtn").onclick = () =>
+  callWorker({action:"delete", matchId: document.getElementById("matchId").value});
+</script>
+</body>
+</html>
