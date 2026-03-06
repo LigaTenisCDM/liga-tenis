@@ -9,15 +9,5 @@
       "updatedAt": "2026-03-06T18:36:54.081Z"
     }
   },
-  "ctc-primavera-2026": {
-    "ctc-primavera-2026__5ª Categoría__1. Ana Martín__2. Miguel Pérez": {
-      "type": "full",
-      "s1a": 6,
-      "s1b": 2,
-      "s2a": 1,
-      "s2b": 0,
-      "updatedAt": "2026-03-06T21:07:49.539Z",
-      "source": "web"
-    }
-  }
+  "ctc-primavera-2026": {}
 }
