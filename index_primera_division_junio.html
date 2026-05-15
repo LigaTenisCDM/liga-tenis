@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>Liga Tenis Deportiva 2026-27</title>
+  <style>
+    :root{
+      --bg:#070A13; --card:#121C3A; --line:rgba(255,255,255,.10);
+      --muted:#9bb0da; --text:#eef2ff; --accent:#7c5cff;
+      --ok:#35d07f; --warn:#ffcc66; --bad:#ff6b6b; --shadow:0 12px 30px rgba(0,0,0,.35);
+      --r:16px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:radial-gradient(1200px 600px at 20% -10%, rgba(124,92,255,.25), transparent 60%),
+                 radial-gradient(1000px 500px at 95% 0%, rgba(53,208,127,.18), transparent 55%),
+                 linear-gradient(180deg,#070A13,#050711);}
+    header{position:sticky;top:0;z-index:10;background:rgba(7,10,19,.92);backdrop-filter: blur(10px);border-bottom:1px solid var(--line);}
+    .wrap{max-width:1200px;margin:0 auto;padding:14px 14px 16px}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1{margin:0;font-size:16px;display:flex;align-items:center;gap:10px}
+    h1 img{height:40px;width:auto;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04)}
+    .sub{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.3}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--muted);font-weight:900;font-size:12px}
+    main{max-width:1200px;margin:0 auto;padding:14px;display:grid;gap:14px}
+    .card{background:rgba(18,28,58,.86);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+    .card h2{margin:0;padding:12px 14px;font-size:13px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .card h2 small{color:var(--muted);font-weight:950}
+    .pad{padding:14px}
+    .tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .tab{padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.14);color:var(--text);font-weight:950;font-size:13px;cursor:pointer}
+    .tab.active{background:rgba(124,92,255,.18);border-color:rgba(124,92,255,.55)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
+    .gridPistas{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width: 980px){.grid2,.grid,.gridPistas{grid-template-columns:1fr}}
+    label{display:block;font-size:12px;color:var(--muted);margin:6px 0 6px}
+    select,input,textarea{width:100%;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:var(--text);outline:none}
+    textarea{min-height:70px;resize:vertical}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:9px 8px;border-bottom:1px solid var(--line);font-size:13px;vertical-align:top}
+    th{color:var(--muted);font-weight:950;text-align:left}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+    .status{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(255,255,255,.14);color:var(--muted)}
+    .status.ok{color:var(--ok);border-color:rgba(53,208,127,.35);background:rgba(53,208,127,.08)}
+    .status.pending{color:var(--warn);border-color:rgba(255,204,102,.35);background:rgba(255,204,102,.08)}
+    .status.bad{color:var(--bad);border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.08)}
+    .controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+    @media (max-width: 700px){.controls{grid-template-columns:1fr}}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .split3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media (max-width:700px){.split,.split3{grid-template-columns:1fr}}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    button{cursor:pointer;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(124,92,255,.22);color:var(--text);font-weight:950}
+    button.secondary{background:transparent}
+    .hint{color:var(--muted);font-size:12px;line-height:1.35;margin-top:10px}
+    .kpis{display:flex;gap:10px;flex-wrap:wrap}
+    .kpi{padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.05);min-width:160px}
+    .kpi .k{color:var(--muted);font-size:11px;font-weight:950}
+    .kpi .v{font-size:18px;font-weight:1000;margin-top:6px}
+    .kpi .s{color:var(--muted);font-size:12px;margin-top:4px}
+    .calWrap{display:grid;gap:10px}
+    .calHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .monthTitle{font-weight:1000}
+    .muted{color:var(--muted)}
+    tr.promote td{background:rgba(53,208,127,.12)}
+    tr.promote td:first-child{border-left:3px solid rgba(53,208,127,.8)}
+    tr.relegate td{background:rgba(255,107,107,.12)}
+    tr.relegate td:first-child{border-left:3px solid rgba(255,107,107,.8)}
+    .calTable{width:100%;border-collapse:separate;border-spacing:6px;table-layout:fixed}
+    .calTable th{color:var(--muted);font-size:10.5px;font-weight:950;text-align:center;padding:8px 0;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03)}
+    .calTable td{vertical-align:top;padding:0}
+    .dayCell{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:12px;padding:7px;min-height:74px;height:74px;overflow:hidden;display:flex;flex-direction:column;gap:5px}
+    .dayCell .n{font-weight:1000;font-size:11px;color:var(--muted);line-height:1;text-align:right}
+    .dayCell .events{display:flex;flex-direction:column;gap:5px;overflow:auto;max-height:54px;padding-right:2px}
+    .evt{border-left:3px solid rgba(124,92,255,.8);padding:4px 6px;border-radius:10px;background:rgba(124,92,255,.10);font-size:11px;line-height:1.15}
+    .evt .t{color:var(--muted);font-size:10px;font-weight:950}
+    .evt.done{border-left-color:rgba(53,208,127,.8);background:rgba(53,208,127,.08)}
+    .evt.pending{border-left-color:rgba(255,204,102,.8);background:rgba(255,204,102,.08)}
+    .evt.reprog{border-left-color:rgba(255,204,102,.8);background:rgba(255,204,102,.12)}
+    details > summary::-webkit-details-marker{display:none}
+    details > summary::after{content:"▾"; float:right; color:var(--muted)}
+    details[open] > summary::after{content:"▴"}
+    .pistasLibres{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05)}
+    .pill.ok{background:rgba(53,208,127,.08);border-color:rgba(53,208,127,.30);color:var(--ok)}
+    .pill.bad{background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.30);color:var(--bad)}
+    .scheduleTable td,.scheduleTable th{text-align:center}
+    .courtFree{background:rgba(53,208,127,.10);border:1px solid rgba(53,208,127,.25);border-radius:12px;padding:10px}
+    .courtBusy{background:rgba(255,107,107,.10);border:1px solid rgba(255,107,107,.25);border-radius:12px;padding:10px}
+    .reprogItem{border:1px solid rgba(255,204,102,.25);background:rgba(255,204,102,.08);border-radius:12px;padding:10px;margin-bottom:10px}
+    .first-col-sticky{position:sticky;left:0;background:rgba(18,28,58,.96);z-index:1}
+    .standWrap{overflow:auto;-webkit-overflow-scrolling:touch}
+    .standWrap table{min-width:860px}
+    .scheduleGhost{margin-top:6px;padding:6px 8px;border-radius:10px;border:1px dashed rgba(53,208,127,.35);background:rgba(53,208,127,.08);font-size:11px;line-height:1.25}
+    .evt.reprog{border-left-color:rgba(255,204,102,.85);background:rgba(255,204,102,.10)}
+    .evt.freed{border-left-color:rgba(53,208,127,.85);background:rgba(53,208,127,.10)}
+  
+    .courtFreed{
+      background:rgba(53,208,127,.12);
+      border:1px dashed rgba(53,208,127,.55);
+      border-radius:12px;
+      padding:10px;
+      animation:blinkFreed 1.15s ease-in-out infinite;
+    }
+    @keyframes blinkFreed{
+      0%,100%{ box-shadow:0 0 0 0 rgba(53,208,127,.0); transform:scale(1); }
+      50%{ box-shadow:0 0 0 3px rgba(53,208,127,.18); transform:scale(1.01); }
+    }
+    .tickerBar{
+      position:fixed; left:0; right:0; bottom:0; z-index:30;
+      background:rgba(7,10,19,.96); backdrop-filter:blur(10px);
+      border-top:1px solid var(--line); box-shadow:0 -10px 24px rgba(0,0,0,.25);
+    }
+    .tickerInner{display:flex;align-items:center;gap:14px;padding:10px 14px;overflow:hidden}
+    .tickerLabel{
+      flex:0 0 auto; font-weight:1000; font-size:12px; color:var(--warn);
+      padding:6px 10px; border-radius:999px; border:1px solid rgba(255,204,102,.25); background:rgba(255,204,102,.08)
+    }
+    .tickerViewport{position:relative;overflow:hidden;min-width:0;flex:1}
+    .tickerTrack{display:flex;gap:12px;width:max-content;animation:tickerMove 34s linear infinite}
+    .tickerBar:hover .tickerTrack{animation-play-state:paused}
+    @keyframes tickerMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .tickerItem{
+      flex:0 0 auto; white-space:nowrap; padding:8px 12px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.05); color:var(--text); font-size:12px
+    }
+    .tickerItem b{font-weight:1000}
+    .tickerItem small{color:var(--muted);font-weight:900}
+    body.hasTicker{padding-bottom:58px}
+
+  
+.freed-by-reprogram{
+  color:#ffe66d;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  animation:blinkFree 1s steps(2, start) infinite;
+}
+@keyframes blinkFree{
+  50%{ opacity:.25; }
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1><img src="logo.png" alt="Logo">Liga Tenis Deportiva 2026-27</h1>
+        <div class="sub">Tanteo: juegos por set (ej: <b>6-4</b> / <b>7-5</b>). Se juegan <b>2 sets</b>. Clasificación estilo ATP: <b>Sets</b> + desempates por <b>dif sets</b> y <b>dif juegos</b>.</div>
+      </div>
+      <div class="badges">
+        <button id="refreshBtn" class="secondary">🔄 Actualizar</button>
+        <span id="refreshStatus" class="badge">🟢 Actualizado ahora</span>
+        <div class="badge" id="competitionBadge">🆔 <span></span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2><span>⚙️ División y filtros</span><small id="meta"></small></h2>
+    <div class="pad">
+      <div class="tabs" id="tabs"></div>
+      <div class="controls">
+        <div><label>Filtrar por jugador</label><select id="playerFilter"></select></div>
+        <div><label>Mostrar</label>
+          <select id="viewMode">
+            <option value="all">Todos los partidos</option>
+            <option value="pending">Solo pendientes</option>
+            <option value="done">Solo con resultado</option>
+          </select>
+        </div>
+        <div><label>Mes</label>
+          <select id="monthPick">
+            <option value="2026-05">Mayo 2026</option>
+            <option value="2026-06">Junio 2026</option>
+            <option value="mayjun">Mayo + Junio</option>
+          </select>
+        </div>
+      </div>
+      <div class="hint">Puedes cargar otra competición cambiando la URL con <span class="mono">?competitionId=liga-pruebas-001</span>. Esta versión usa resultados + programación online.</div>
+    </div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2><span>📅 Calendario visual mensual</span><small>Compacto</small></h2>
+      <div class="pad calWrap" id="calendarWrap"></div>
+    </div>
+
+    <div class="card">
+      <h2><span>📊 Estadísticas del jugador</span><small id="playerStatsTitle">Selecciona un jugador</small></h2>
+      <div class="pad">
+        <div class="kpis" id="kpis"></div>
+        <div class="hint" id="nextMatches"></div>
+      </div>
+    </div>
+  </section>
+<section class="card">
+    <h2><span>⚠️ Reprogramaciones visibles</span><small id="reprogMeta"></small></h2>
+    <div class="pad" id="reprogramList"></div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <details>
+        <summary style="cursor:pointer;font-weight:900;padding:12px 14px;border-bottom:1px solid var(--line);list-style:none;">
+          📋 Cruces (lista) — pulsar para ver
+          <small id="matchCount" style="margin-left:10px;color:var(--muted)"></small>
+        </summary>
+        <div class="pad">
+          <table>
+            <thead><tr><th>Fecha</th><th>Partido</th><th>Resultado</th><th>Estado</th></tr></thead>
+            <tbody id="matchesTbody"></tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2><span>🧾 Resultado y programación</span><small id="editHint"></small></h2>
+      <div class="pad">
+        <label>Selecciona partido</label>
+        <select id="matchSelect"></select>
+
+        <div class="split" style="margin-top:10px">
+          <div>
+            <label>Set 1 (juegos)</label>
+            <div class="split">
+              <input id="s1a" type="number" min="0" max="7" placeholder="A"/>
+              <input id="s1b" type="number" min="0" max="7" placeholder="B"/>
+            </div>
+          </div>
+          <div>
+            <label>Set 2 (juegos)</label>
+            <div class="split">
+              <input id="s2a" type="number" min="0" max="7" placeholder="A"/>
+              <input id="s2b" type="number" min="0" max="7" placeholder="B"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top:10px">
+          <div>
+            <label>Fecha y hora programadas</label>
+            <input id="matchDateTime" type="datetime-local">
+          </div>
+          <div>
+            <label>Pista</label>
+            <select id="matchCourt"></select>
+          </div>
+        </div>
+
+        <div class="split" style="margin-top:10px">
+          <div>
+            <label><input id="isReprogrammed" type="checkbox" style="width:auto;margin-right:8px">Marcar como reprogramado</label>
+          </div>
+          <div>
+            <label>Nota interna</label>
+            <input id="scheduleNote" type="text" placeholder="Ej: cambio por lluvia">
+          </div>
+        </div>
+
+        <div class="btns">
+          <button id="saveBtn">Guardar resultado</button>
+          <button id="saveScheduleBtn">Guardar programación</button>
+          <button class="secondary" id="clearBtn">Borrar resultado</button>
+          <button class="secondary" id="resetBtn">Actualizar datos</button>
+          <span id="saveStatus" class="status" style="display:none"></span>
+        </div>
+
+        <div class="hint">La programación se comparte online entre dispositivos si usas el Worker v2. Las pistas ocupadas se marcan visualmente en el gestor.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span>🏆 Clasificación provisional (ATP)</span><small id="standHint"></small></h2>
+    <div class="pad standWrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th class="first-col-sticky">Jugador</th><th>PTS (Sets)</th><th>PJ</th>
+            <th>SF</th><th>SA</th><th>Dif Sets</th>
+            <th>J+</th><th>J−</th><th>Dif Juegos</th>
+          </tr>
+        </thead>
+        <tbody id="standingsTbody"></tbody>
+      </table>
+      <div class="hint">Orden: PTS (sets), Dif Sets, Dif Juegos, Juegos a favor, nombre. ✅ Ascienden 2 primeros (verde). ⛔ Descienden 2 últimos (rojo).</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const LEAGUE = {
+  "1ª División Junio": {
+    hourLabel: "19:00 / 20:00",
+    players: [
+      "Marco Gutierrez",
+      "Andrés González Fernández",
+      "Bosco Millanes",
+      "Gonzalo Fernández",
+      "Pablo Muñiz",
+      "Nuño Estéfano Hernaiz",
+      "Mario Garcia Blanco",
+      "Samuel Gonzalez Fernandez",
+      "Jaime Herrera Sanchez"
+    ],
+    matches: [
+      { dt:"2026-05-18 19:00", a:"Marco Gutierrez", b:"Andrés González Fernández" },
+      { dt:"2026-05-18 20:00", a:"Andrés González Fernández", b:"Bosco Millanes" },
+      { dt:"2026-05-19 19:00", a:"Bosco Millanes", b:"Gonzalo Fernández" },
+      { dt:"2026-05-19 20:00", a:"Gonzalo Fernández", b:"Pablo Muñiz" },
+      { dt:"2026-05-20 19:00", a:"Pablo Muñiz", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-05-20 20:00", a:"Nuño Estéfano Hernaiz", b:"Mario Garcia Blanco" },
+      { dt:"2026-05-21 19:00", a:"Mario Garcia Blanco", b:"Samuel Gonzalez Fernandez" },
+      { dt:"2026-05-21 20:00", a:"Samuel Gonzalez Fernandez", b:"Jaime Herrera Sanchez" },
+
+      { dt:"2026-05-22 19:00", a:"Marco Gutierrez", b:"Bosco Millanes" },
+      { dt:"2026-05-22 20:00", a:"Andrés González Fernández", b:"Gonzalo Fernández" },
+      { dt:"2026-05-25 19:00", a:"Bosco Millanes", b:"Pablo Muñiz" },
+      { dt:"2026-05-25 20:00", a:"Gonzalo Fernández", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-05-26 20:00", a:"Nuño Estéfano Hernaiz", b:"Samuel Gonzalez Fernandez" },
+      { dt:"2026-05-27 20:00", a:"Marco Gutierrez", b:"Gonzalo Fernández" },
+      { dt:"2026-05-27 19:00", a:"Mario Garcia Blanco", b:"Jaime Herrera Sanchez" },
+      { dt:"2026-05-28 19:00", a:"Andrés González Fernández", b:"Pablo Muñiz" },
+      { dt:"2026-05-28 20:00", a:"Bosco Millanes", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-05-29 19:00", a:"Gonzalo Fernández", b:"Mario Garcia Blanco" },
+      { dt:"2026-05-29 20:00", a:"Pablo Muñiz", b:"Samuel Gonzalez Fernandez" },
+
+      { dt:"2026-06-01 20:00", a:"Marco Gutierrez", b:"Pablo Muñiz" },
+      { dt:"2026-06-01 19:00", a:"Nuño Estéfano Hernaiz", b:"Jaime Herrera Sanchez" },
+      { dt:"2026-06-02 19:00", a:"Andrés González Fernández", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-06-02 20:00", a:"Bosco Millanes", b:"Mario Garcia Blanco" },
+      { dt:"2026-06-03 19:00", a:"Gonzalo Fernández", b:"Samuel Gonzalez Fernandez" },
+      { dt:"2026-06-03 20:00", a:"Pablo Muñiz", b:"Jaime Herrera Sanchez" },
+      { dt:"2026-06-04 19:00", a:"Marco Gutierrez", b:"Nuño Estéfano Hernaiz" },
+      { dt:"2026-06-04 20:00", a:"Andrés González Fernández", b:"Mario Garcia Blanco" },
+      { dt:"2026-06-05 19:00", a:"Bosco Millanes", b:"Samuel Gonzalez Fernandez" },
+      { dt:"2026-06-05 20:00", a:"Gonzalo Fernández", b:"Jaime Herrera Sanchez" },
+      { dt:"2026-06-08 19:00", a:"Marco Gutierrez", b:"Mario Garcia Blanco" },
+      { dt:"2026-06-08 20:00", a:"Andrés González Fernández", b:"Samuel Gonzalez Fernandez" },
+      { dt:"2026-06-09 20:00", a:"Marco Gutierrez", b:"Samuel Gonzalez Fernandez" },
+      { dt:"2026-06-09 19:00", a:"Bosco Millanes", b:"Jaime Herrera Sanchez" },
+      { dt:"2026-06-10 20:00", a:"Marco Gutierrez", b:"Jaime Herrera Sanchez" },
+      { dt:"2026-06-10 19:00", a:"Andrés González Fernández", b:"Jaime Herrera Sanchez" },
+
+      { dt:"2026-06-26 19:00", a:"Pablo Muñiz", b:"Mario Garcia Blanco" }
+    ]
+  }
+};
+
+const COURTS = ["Pista A", "Pista B", "Pista C"];
+const DEFAULT_COURT = "Pista A";
+const HOURS = ["18:00","19:00","20:00","21:00"];
+const CONFIG = {
+  competitionId: "ligaCDM",
+  workerUrl: "https://liga-tenis-api-multi.ligatenisdeportiva.workers.dev/"
+};
+
+const DIVISION_KEY = "liga_tenis_division_actual_" + CONFIG.competitionId;
+const FILTER_KEY = "liga_tenis_filtro_jugador_" + CONFIG.competitionId;
+const VIEWMODE_KEY = "liga_tenis_view_mode_" + CONFIG.competitionId;
+const MONTH_KEY = "liga_tenis_month_pick_" + CONFIG.competitionId;
+const COURT_DATE_KEY = "liga_tenis_court_date_" + CONFIG.competitionId;
+const COURT_HOUR_KEY = "liga_tenis_court_hour_" + CONFIG.competitionId;
+
+function safeDivision(){
+  const saved = localStorage.getItem(DIVISION_KEY);
+  return (saved && LEAGUE[saved]) ? saved : Object.keys(LEAGUE)[0];
+}
+
+function competitionBadge(){
+  const span = document.querySelector('#competitionBadge span');
+  if(span) span.textContent = CONFIG.competitionId;
+}
+
+async function workerRequest(payload){
+  const r = await fetch(CONFIG.workerUrl, {
+    method:"POST",
+    mode:"cors",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ competitionId: CONFIG.competitionId, ...payload })
+  });
+  if(!r.ok){
+    const t = await r.text().catch(()=> "");
+    throw new Error(t || ("HTTP " + r.status));
+  }
+  const ct = (r.headers.get("content-type") || "").toLowerCase();
+  if(ct.includes("application/json")) return await r.json();
+  const txt = await r.text();
+  try { return JSON.parse(txt); } catch(e) { return { ok:true, raw:txt }; }
+}
+
+function normalizeWorkerRead(data){
+  const root = data && typeof data === 'object' ? (data.data || data.results || data) : {};
+  const results = root.results || (hasDivKeys(root) ? root : {});
+  const schedule = root.schedule || {};
+  return { results: normalizeResults(results), schedule: normalizeSchedule(schedule) };
+}
+function hasDivKeys(data){ return data && Object.keys(data).some(k => k.endsWith("División") && typeof data[k] === "object"); }
+function normalizeResults(data){
+  if(!data || typeof data !== "object") return {};
+  if(hasDivKeys(data)) return data;
+  const grouped = {};
+  for(const [k,v] of Object.entries(data)){
+    if(typeof k !== "string" || !k.includes("__")) continue;
+    const div = k.split("__")[0];
+    if(!grouped[div]) grouped[div] = {};
+    grouped[div][k] = v;
+  }
+  return grouped;
+}
+function normalizeSchedule(data){ return (data && typeof data === 'object') ? data : {}; }
+
+async function loadOnlineState(){
+  const data = await workerRequest({ action:"read" });
+  return normalizeWorkerRead(data);
+}
+
+let lastRefreshAt = Date.now();
+function updateRefreshBadge(){
+  const el = document.getElementById('refreshStatus');
+  if(!el) return;
+  const secs = Math.max(0, Math.floor((Date.now()-lastRefreshAt)/1000));
+  el.textContent = secs < 2 ? '🟢 Actualizado ahora' : `🟢 Actualizado hace ${secs} s`;
+}
+setInterval(updateRefreshBadge, 1000);
+
+async function refreshOnlineOnce(){
+  try {
+    const online = await loadOnlineState();
+    state.results = online.results || {};
+    state.schedule = online.schedule || {};
+    lastRefreshAt = Date.now();
+    renderAll();
+  } catch(e) {
+    console.warn(e);
+    alert(e.message || String(e));
+  }
+}
+
+const state = {
+  division: safeDivision(),
+  filterPlayer: localStorage.getItem(FILTER_KEY) || "__ALL__",
+  viewMode: localStorage.getItem(VIEWMODE_KEY) || "all",
+  monthPick: localStorage.getItem(MONTH_KEY) || "mayjun",
+  courtDate: localStorage.getItem(COURT_DATE_KEY) || "2026-03-11",
+  courtHour: localStorage.getItem(COURT_HOUR_KEY) || "20:00",
+  results: {},
+  schedule: {}
+};
+
+function setSaveStatus(text, kind="pending"){
+  const el = document.getElementById("saveStatus");
+  if(!el) return;
+  el.style.display = text ? "inline-flex" : "none";
+  el.textContent = text || "";
+  el.className = "status " + (kind === "ok" ? "ok" : (kind === 'bad' ? 'bad' : 'pending'));
+}
+function setButtonsDisabled(disabled){
+  ["saveBtn","saveScheduleBtn","clearBtn","resetBtn","refreshBtn","matchSelect","s1a","s1b","s2a","s2b","matchDateTime","matchCourt","scheduleNote","isReprogrammed"].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.disabled = !!disabled;
+  });
+}
+
+function ensureBucket(){ if(!state.results[state.division]) state.results[state.division] = {}; }
+function getDiv(){ return LEAGUE[state.division]; }
+function matchId(m){ return `${state.division}__${m.dt}__${m.a}__${m.b}`; }
+function getSchedule(matchKey){ return state.schedule[matchKey] || null; }
+function getScheduledDateTime(m){ return getSchedule(matchId(m))?.dt || m.dt; }
+function getScheduledCourt(m){ return getSchedule(matchId(m))?.court || DEFAULT_COURT; }
+function isReprogrammed(m){ return !!getSchedule(matchId(m))?.reprogrammed; }
+function getScheduleNote(m){ return getSchedule(matchId(m))?.note || ""; }
+
+function parseDT(dtStr){ const [d,t] = dtStr.split(" "); const [Y,M,D] = d.split("-").map(Number); const [h,min] = t.split(":").map(Number); return new Date(Y, M-1, D, h, min, 0, 0); }
+function fmtDate(dtStr){ const d = parseDT(dtStr); const wd = d.toLocaleDateString("es-ES", { weekday:"long" }); const dd = d.toLocaleDateString("es-ES", { day:"2-digit", month:"2-digit", year:"numeric" }); const hh = d.toLocaleTimeString("es-ES", { hour:"2-digit", minute:"2-digit" }); return `${wd.charAt(0).toUpperCase()+wd.slice(1)} ${dd} · ${hh}`; }
+function toInputDateTime(dtStr){ const [date, time] = dtStr.split(' '); return `${date}T${time}`; }
+function fromInputDateTime(v){ return v ? v.replace('T',' ') : ''; }
+function validSet(gA, gB){ if(!Number.isInteger(gA) || !Number.isInteger(gB)) return false; if(gA<0 || gB<0) return false; if(gA===gB) return false; if(gA>7 || gB>7) return false; return true; }
+
+function isMatchVisible(m){ ensureBucket(); const res = state.results[state.division]; const r = res[matchId(m)]; const has = !!r;
+  if(state.filterPlayer !== "__ALL__"){ if(m.a !== state.filterPlayer && m.b !== state.filterPlayer) return false; }
+  if(state.viewMode === "pending" && has) return false;
+  if(state.viewMode === "done" && !has) return false;
+  return true;
+}
+function visibleMatches(){ return getDiv().matches.filter(isMatchVisible); }
+
+function computeStandings(){ const { players, matches } = getDiv(); ensureBucket(); const res=state.results[state.division];
+  const t = {};
+  for(const p of players) t[p] = { player:p, pts:0, pj:0, sf:0, sa:0, gf:0, ga:0 };
+  for(const m of matches){ const r = res[matchId(m)]; if(!r) continue; const A=m.a, B=m.b;
+    const s1a=r.s1a, s1b=r.s1b, s2a=r.s2a, s2b=r.s2b;
+    let setsA=0, setsB=0; if(s1a>s1b) setsA++; else setsB++; if(s2a>s2b) setsA++; else setsB++;
+    t[A].pj++; t[B].pj++; t[A].pts += setsA; t[B].pts += setsB;
+    t[A].sf += setsA; t[A].sa += setsB; t[B].sf += setsB; t[B].sa += setsA;
+    t[A].gf += (s1a+s2a); t[A].ga += (s1b+s2b); t[B].gf += (s1b+s2b); t[B].ga += (s1a+s2a);
+  }
+  const arr = Object.values(t).map(x => ({...x, difSets:x.sf-x.sa, difGames:x.gf-x.ga }));
+  arr.sort((u,v)=>(v.pts-u.pts)||(v.difSets-u.difSets)||(v.difGames-u.difGames)||(v.gf-u.gf)||u.player.localeCompare(v.player,"es"));
+  return arr;
+}
+
+function playerStats(player){ if(!player || player==="__ALL__") return null; ensureBucket(); const res = state.results[state.division];
+  let pj=0,wins=0,losses=0,setsW=0,setsL=0,gamesW=0,gamesL=0; const upcoming=[];
+  for(const m of getDiv().matches){ const involved=(m.a===player||m.b===player); if(!involved) continue;
+    const r=res[matchId(m)];
+    if(!r){ upcoming.push({...m, scheduledDt:getScheduledDateTime(m)}); continue; }
+    pj++; const isA=(m.a===player);
+    const s1p=isA?r.s1a:r.s1b, s1o=isA?r.s1b:r.s1a, s2p=isA?r.s2a:r.s2b, s2o=isA?r.s2b:r.s2a;
+    gamesW += (s1p+s2p); gamesL += (s1o+s2o);
+    let sw=0,sl=0; if(s1p>s1o) sw++; else sl++; if(s2p>s2o) sw++; else sl++;
+    setsW += sw; setsL += sl; if(sw>sl) wins++; else if(sl>sw) losses++;
+  }
+  upcoming.sort((a,b)=>parseDT(a.scheduledDt)-parseDT(b.scheduledDt));
+  const winRate = pj ? Math.round((wins/pj)*100) : 0;
+  return { player, pj, wins, losses, setsW, setsL, gamesW, gamesL, difGames: gamesW-gamesL, winRate, upcoming: upcoming.slice(0,5) };
+}
+
+function renderTabs(){ const tabs=document.getElementById("tabs"); tabs.innerHTML="";
+  for(const div of Object.keys(LEAGUE)){ const b=document.createElement("button");
+    b.className="tab"+(div===state.division?" active":""); b.textContent=div;
+    b.onclick=()=>{
+      state.division=div;
+      localStorage.setItem(DIVISION_KEY, div);
+      if(div === "liga_junio" && !["2026-05","2026-06","mayjun"].includes(state.monthPick)){
+        state.monthPick = "mayjun";
+        localStorage.setItem(MONTH_KEY, state.monthPick);
+      }
+      renderAll();
+    }; tabs.appendChild(b);
+  }
+}
+
+function renderFilters(){ const pf=document.getElementById("playerFilter"); pf.innerHTML="";
+  const all=document.createElement("option"); all.value="__ALL__"; all.textContent="(Todos)"; pf.appendChild(all);
+  for(const p of getDiv().players){ const o=document.createElement("option"); o.value=p; o.textContent=p; pf.appendChild(o); }
+  if(state.filterPlayer !== "__ALL__" && !getDiv().players.includes(state.filterPlayer)){
+    state.filterPlayer = "__ALL__";
+    localStorage.setItem(FILTER_KEY, "__ALL__");
+  }
+  pf.value=state.filterPlayer;
+  pf.onchange=()=>{ state.filterPlayer=pf.value; localStorage.setItem(FILTER_KEY, state.filterPlayer); renderAll(); };
+  const vm=document.getElementById("viewMode"); vm.value=state.viewMode; vm.onchange=()=>{ state.viewMode=vm.value; localStorage.setItem(VIEWMODE_KEY, state.viewMode); renderAll(); };
+  const mp=document.getElementById("monthPick"); mp.value=state.monthPick; mp.onchange=()=>{ state.monthPick=mp.value; localStorage.setItem(MONTH_KEY, state.monthPick); renderCalendar(); };
+}
+
+function renderMeta(){ document.getElementById("meta").textContent = `Hora base: ${getDiv().hourLabel} · ${getDiv().players.length} jugadores · ${getDiv().matches.length} partidos`; }
+
+function renderList(){ const list=visibleMatches(); ensureBucket(); const res=state.results[state.division];
+  document.getElementById("matchCount").textContent = `${list.length} visibles`;
+  const tb=document.getElementById("matchesTbody"); tb.innerHTML="";
+  for(const m of list){ const r=res[matchId(m)]; const sched = getSchedule(matchId(m)); const displayDt = sched?.dt || m.dt; const court = sched?.court ? `<div class="muted">${sched.court}</div>` : '';
+    const tr=document.createElement("tr");
+    tr.innerHTML = `<td>${fmtDate(displayDt)}${court}</td><td><b>${m.a}</b> <span class="mono">vs</span> <b>${m.b}</b>${sched?.reprogrammed?`<div class="status pending" style="margin-top:6px">⚠️ Reprogramado</div>`:''}</td><td>${r?`${r.s1a}-${r.s1b} / ${r.s2a}-${r.s2b}`:"—"}</td><td><span class="status ${r?"ok":"pending"}">${r?"✅ Subido":"⏳ Pendiente"}</span></td>`;
+    tb.appendChild(tr);
+  }
+}
+
+function renderCourtOptions(){
+  const sel = document.getElementById('matchCourt');
+  sel.innerHTML = COURTS.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+function renderMatchSelect(){ const sel=document.getElementById("matchSelect"); const matches=getDiv().matches; ensureBucket(); const res=state.results[state.division];
+  sel.innerHTML="";
+  matches.forEach((m,idx)=>{ const r=res[matchId(m)]; const sched = getSchedule(matchId(m));
+    const opt=document.createElement("option"); opt.value=String(idx);
+    opt.textContent = `${fmtDate((sched?.dt||m.dt))} — ${m.a} vs ${m.b}${sched?.court?` · ${sched.court}`:''}${sched?.reprogrammed?' · REPROG':''}${r?` (${r.s1a}-${r.s1b}/${r.s2a}-${r.s2b})`:""}`;
+    sel.appendChild(opt);
+  });
+  sel.onchange=syncFormFromSelected; syncFormFromSelected();
+}
+
+function syncFormFromSelected(){ const idx=Number(document.getElementById("matchSelect").value||0); const m=getDiv().matches[idx]; if(!m) return;
+  ensureBucket(); const res=state.results[state.division]; const r=res[matchId(m)]; const sched = getSchedule(matchId(m));
+  document.getElementById("s1a").value = r ? r.s1a : "";
+  document.getElementById("s1b").value = r ? r.s1b : "";
+  document.getElementById("s2a").value = r ? r.s2a : "";
+  document.getElementById("s2b").value = r ? r.s2b : "";
+  document.getElementById('matchDateTime').value = toInputDateTime((sched?.dt || m.dt));
+  document.getElementById('matchCourt').value = sched?.court || DEFAULT_COURT;
+  document.getElementById('isReprogrammed').checked = !!sched?.reprogrammed;
+  document.getElementById('scheduleNote').value = sched?.note || '';
+  document.getElementById("editHint").textContent = `${m.a} vs ${m.b}`;
+}
+
+function renderStandings(){ const s=computeStandings(); const tb=document.getElementById("standingsTbody"); tb.innerHTML="";
+  const played = s.reduce((acc,x)=>acc+x.pj,0)/2;
+  document.getElementById("standHint").textContent = `Partidos con resultado: ${played}`;
+  s.forEach((x,i)=>{
+    const tr=document.createElement("tr"); if(i<2) tr.classList.add("promote"); if(i>=s.length-2) tr.classList.add("relegate");
+    tr.innerHTML = `<td>${i+1}</td><td class="first-col-sticky"><b>${x.player}</b></td><td><b>${x.pts}</b></td><td>${x.pj}</td><td>${x.sf}</td><td>${x.sa}</td><td>${x.difSets}</td><td>${x.gf}</td><td>${x.ga}</td><td>${x.difGames}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+function renderPlayerStats(){ const title=document.getElementById("playerStatsTitle"); const box=document.getElementById("kpis"); const next=document.getElementById("nextMatches");
+  const p = state.filterPlayer!=="__ALL__" ? state.filterPlayer : null; const stats = playerStats(p); box.innerHTML=""; next.innerHTML="";
+  if(!stats){ title.textContent="Selecciona un jugador"; next.innerHTML = `<span class="muted">Elige un jugador en el filtro.</span>`; return; }
+  title.textContent=stats.player;
+  const k=(label,value,sub="")=>{ const d=document.createElement("div"); d.className="kpi"; d.innerHTML=`<div class="k">${label}</div><div class="v">${value}</div><div class="s">${sub}</div>`; return d; };
+  box.appendChild(k("Partidos", stats.pj, `${stats.wins}V · ${stats.losses}D · ${stats.winRate}%`));
+  box.appendChild(k("Sets", `${stats.setsW}-${stats.setsL}`, "Ganados-Perdidos"));
+  box.appendChild(k("Juegos", `${stats.gamesW}-${stats.gamesL}`, `Dif ${stats.difGames}`));
+  if(stats.upcoming.length){ next.innerHTML = `<b>Próximos:</b><br/>` + stats.upcoming.map(m=>`• ${fmtDate(m.scheduledDt)} — ${m.a} vs ${m.b}`).join("<br/>"); }
+  else next.innerHTML = `<b>Próximos:</b> <span class="muted">No quedan.</span>`;
+}
+
+function monthName(d){ return d.toLocaleDateString("es-ES", { month:"long", year:"numeric" }).replace(/^./, c=>c.toUpperCase()); }
+function endOfMonth(d){ return new Date(d.getFullYear(), d.getMonth()+1, 0); }
+function localKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+
+
+function scheduleIsReprogrammed(m, sched){
+  if(!sched || typeof sched !== 'object') return false;
+  const changedDt = !!sched.dt && sched.dt !== m.dt;
+  const changedCourt = !!sched.court && sched.court !== DEFAULT_COURT;
+  return !!sched.reprogrammed || changedDt || changedCourt;
+}
+
+function renderMonthCalendar(year, monthIndex){
+  const first = new Date(year, monthIndex, 1); const last  = endOfMonth(first);
+  const gridStart = new Date(first); const firstDow = (first.getDay() + 6) % 7; gridStart.setDate(first.getDate() - firstDow);
+  const gridEnd = new Date(last); const lastDow = (last.getDay() + 6) % 7; const addToFriday = (4 - lastDow + 7) % 7; gridEnd.setDate(last.getDate() + addToFriday);
+  ensureBucket(); const res = state.results[state.division];
+  const ev = {};
+  for(const m of getDiv().matches){
+    if(!isMatchVisible(m)) continue;
+    const key = matchId(m);
+    const sched = getSchedule(key);
+    const activeDate = (sched?.dt || m.dt).split(" ")[0];
+    if(!ev[activeDate]) ev[activeDate]=[];
+    ev[activeDate].push({ type:'match', m, r: res[key], sched });
+    if(scheduleIsReprogrammed(m, sched) && ((sched?.dt && sched.dt !== m.dt) || (sched?.court && sched.court !== DEFAULT_COURT))){
+      const originalDate = m.dt.split(" ")[0];
+      if(!ev[originalDate]) ev[originalDate]=[];
+      ev[originalDate].push({ type:'freed', m, sched, originalCourt: DEFAULT_COURT, originalTime: m.dt.split(" ")[1] });
+    }
+  }
+  const section = document.createElement("div"); section.className = "calWrap";
+  const head = document.createElement("div"); head.className = "calHeader"; head.innerHTML = `<div class="monthTitle">${monthName(first)}</div><div class="muted">Filtro: ${state.filterPlayer==="__ALL__"?"Todos":state.filterPlayer}</div>`; section.appendChild(head);
+  const table = document.createElement("table"); table.className = "calTable";
+  const thead = document.createElement("thead"); const trh = document.createElement("tr"); ["Lun","Mar","Mié","Jue","Vie"].forEach(x=>{ const th=document.createElement("th"); th.textContent=x; trh.appendChild(th); }); thead.appendChild(trh); table.appendChild(thead);
+  const tbody = document.createElement("tbody"); let d = new Date(gridStart);
+  while(d <= gridEnd){ const tr = document.createElement("tr");
+    for(let col=0; col<5; col++){
+      const td=document.createElement("td"); const cell=document.createElement("div"); cell.className="dayCell"; const inMonth = d.getMonth()===monthIndex; cell.style.opacity = inMonth ? "1" : ".40";
+      const num=document.createElement("div"); num.className="n"; num.textContent=d.getDate(); cell.appendChild(num);
+      const key = localKey(d);
+      const items = (ev[key]||[]).slice().sort((a,b)=>{
+        const adt = a.type==='freed' ? `${key} ${a.originalTime}` : (a.sched?.dt||a.m.dt);
+        const bdt = b.type==='freed' ? `${key} ${b.originalTime}` : (b.sched?.dt||b.m.dt);
+        return parseDT(adt)-parseDT(bdt);
+      });
+      const list=document.createElement("div"); list.className="events";
+      items.forEach(item=>{
+        const e=document.createElement("div");
+        if(item.type === 'freed'){
+          e.className='evt freed';
+          e.innerHTML = `<div class="t">${item.originalTime} · ${item.originalCourt}</div><div><b>🟢 PISTA LIBRE</b></div><div>${item.m.a} vs ${item.m.b}</div>`;
+        } else {
+          const {m,r,sched} = item;
+          const activeCourt = sched?.court || DEFAULT_COURT;
+          e.className="evt " + (sched?.reprogrammed ? 'reprog' : (r ? "done" : "pending"));
+          const time=(sched?.dt||m.dt).split(" ")[1];
+          const score = r ? ` · <b>${r.s1a}-${r.s1b}</b> / <b>${r.s2a}-${r.s2b}</b>` : "";
+          const extra = sched?.reprogrammed ? `<div class="scheduleGhost">⚠️ Reprogramado · ahora en <b>${activeCourt}</b></div>` : '';
+          e.innerHTML = `<div class="t">${time} · ${activeCourt}</div><div><b>${m.a}</b> vs <b>${m.b}</b>${score}</div>${extra}`;
+        }
+        list.appendChild(e);
+      });
+      cell.appendChild(list); td.appendChild(cell); tr.appendChild(td); d.setDate(d.getDate()+1);
+    }
+    d.setDate(d.getDate()+2); tbody.appendChild(tr);
+  }
+  table.appendChild(tbody); section.appendChild(table); return section;
+}
+function renderCalendar(){
+  const wrap=document.getElementById("calendarWrap");
+  wrap.innerHTML="";
+  if(state.monthPick==="2026-05") wrap.appendChild(renderMonthCalendar(2026,4));
+  else if(state.monthPick==="2026-06") wrap.appendChild(renderMonthCalendar(2026,5));
+  else {
+    wrap.appendChild(renderMonthCalendar(2026,4));
+    wrap.appendChild(renderMonthCalendar(2026,5));
+  }
+}
+
+function renderCourtControls(){
+  document.getElementById('courtDate').value = state.courtDate;
+  const hourSel = document.getElementById('courtHour');
+  hourSel.innerHTML = HOURS.map(h=>`<option value="${h}">${h}</option>`).join('');
+  hourSel.value = state.courtHour;
+  document.getElementById('courtDate').onchange = e => { state.courtDate = e.target.value; localStorage.setItem(COURT_DATE_KEY, state.courtDate); renderCourtManager(); };
+  hourSel.onchange = e => { state.courtHour = e.target.value; localStorage.setItem(COURT_HOUR_KEY, state.courtHour); renderCourtManager(); };
+}
+function getOccupancyFor(date, hour){
+  const rows = [];
+  for(const divName of Object.keys(LEAGUE)){
+    for(const m of LEAGUE[divName].matches){
+      const key = `${divName}__${m.dt}__${m.a}__${m.b}`;
+      const sched = state.schedule[key];
+      const dt = (sched?.dt || m.dt);
+      const [d,t] = dt.split(' ');
+      if(d === date && t === hour){ rows.push({div:divName, m, key, court: sched?.court || DEFAULT_COURT , reprogrammed: !!sched?.reprogrammed}); }
+    }
+  }
+  return rows;
+}
+function renderCourtManager(){
+  renderCourtControls();
+  const list = getOccupancyFor(state.courtDate, state.courtHour);
+  const free = document.getElementById('freeCourts'); free.innerHTML = '';
+  document.getElementById('pistasResumen').textContent = `${state.courtDate || '—'} · ${state.courtHour || '—'}`;
+  const busyMap = new Map(); list.forEach(x=>{ busyMap.set(x.court || DEFAULT_COURT, x); });
+  for(const court of COURTS){
+    const item = busyMap.get(court);
+    const div = document.createElement('div');
+    div.className = 'pill ' + (item ? 'bad' : 'ok');
+    div.innerHTML = item ? `🔴 ${court} ocupada` : `🟢 ${court} libre`;
+    free.appendChild(div);
+  }
+  renderDayOccupancy();
+}
+
+function renderDayOccupancy(){
+  const box = document.getElementById('dayOccupancy');
+  const date = state.courtDate;
+  document.getElementById('dayOccupancyMeta').textContent = date;
+  let html = `<table class="scheduleTable"><thead><tr><th>Hora</th>${COURTS.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+  for(const hour of HOURS){
+    const items = getOccupancyFor(date, hour);
+    html += `<tr><td><b>${hour}</b></td>`;
+    for(const court of COURTS){
+      const item = items.find(x=>x.court===court);
+      const freedBy = Object.keys(LEAGUE).flatMap(divName => LEAGUE[divName].matches.map(m => ({divName,m}))).find(({divName,m})=>{
+        const key = `${divName}__${m.dt}__${m.a}__${m.b}`;
+        const sched = state.schedule[key];
+        if(!sched?.reprogrammed || !sched?.dt) return false;
+        const [origDate,origHour] = m.dt.split(' ');
+        const origCourt = DEFAULT_COURT;
+        return origDate===date && origHour===hour && origCourt===court;
+      });
+      if(item){
+        html += `<td><div class="courtBusy">🔴 Ocupada<br><b>${item.div}</b><br>${item.m.a} vs ${item.m.b}${item.reprogrammed?'<br>⚠️ Reprog.':''}</div></td>`;
+      } else if(freedBy){
+        html += `<td><div class="courtFreed"><span class="freed-by-reprogram">PISTA LIBRE</span><br><b>${freedBy.divName}</b><br>${freedBy.m.a} vs ${freedBy.m.b}</div></td>`;
+      } else {
+        html += `<td><div class="courtFree">🟢 Libre</div></td>`;
+      }
+    }
+    html += `</tr>`;
+  }
+  html += `</tbody></table>`;
+  box.innerHTML = html;
+}
+
+function renderReprograms(){
+  const box = document.getElementById('reprogramList');
+  const items = [];
+  for(const divName of Object.keys(LEAGUE)){
+    for(const m of LEAGUE[divName].matches){
+      const key = `${divName}__${m.dt}__${m.a}__${m.b}`;
+      const sched = state.schedule[key];
+      if(scheduleIsReprogrammed(m, sched)) items.push({div:divName, m, sched});
+    }
+  }
+  items.sort((a,b)=>parseDT((a.sched && a.sched.dt) || a.m.dt)-parseDT((b.sched && b.sched.dt) || b.m.dt));
+  document.getElementById('reprogMeta').textContent = `${items.length} visibles`;
+  if(!items.length){
+    box.innerHTML = `<div class="muted">No hay reprogramaciones marcadas.</div>`;
+    return;
+  }
+  box.innerHTML = items.map(({div,m,sched})=>{
+    const shownDt = (sched && sched.dt) || m.dt;
+    const shownCourt = (sched && sched.court) || DEFAULT_COURT;
+    return `<div class="reprogItem"><b>${div}</b> · ${m.a} vs ${m.b}<br><span class="muted">Nueva fecha:</span> ${fmtDate(shownDt)} · ${shownCourt}${sched && sched.note ? `<br><span class="muted">Nota:</span> ${sched.note}` : ''}</div>`;
+  }).join('');
+}
+
+async function onSave(){
+  const idx = Number(document.getElementById("matchSelect").value || 0); const m = getDiv().matches[idx];
+  const s1a = Number(document.getElementById("s1a").value); const s1b = Number(document.getElementById("s1b").value); const s2a = Number(document.getElementById("s2a").value); const s2b = Number(document.getElementById("s2b").value);
+  if(!validSet(s1a,s1b) || !validSet(s2a,s2b)){ alert("Revisa los sets: enteros, distintos, entre 0 y 7."); return; }
+  try{
+    setButtonsDisabled(true); setSaveStatus("Guardando resultado…", "pending");
+    await workerRequest({ action: "upsert", matchId: matchId(m), score: { s1a, s1b, s2a, s2b } });
+    ensureBucket(); state.results[state.division][matchId(m)] = { s1a, s1b, s2a, s2b, updatedAt: new Date().toISOString() };
+    renderAll(); await refreshOnlineOnce(); setSaveStatus("✅ Resultado guardado", "ok"); setTimeout(()=>setSaveStatus("", "pending"), 2500);
+  }catch(e){ setSaveStatus("⚠️ Error al guardar", "bad"); alert(e.message || String(e)); }
+  finally{ setButtonsDisabled(false); }
+}
+
+async function onSaveSchedule(){
+  const idx = Number(document.getElementById("matchSelect").value || 0); const m = getDiv().matches[idx];
+  const dt = fromInputDateTime(document.getElementById('matchDateTime').value);
+  const court = document.getElementById('matchCourt').value || DEFAULT_COURT;
+  const reprogrammed = document.getElementById('isReprogrammed').checked;
+  const note = document.getElementById('scheduleNote').value.trim();
+  if(!dt){ alert('Selecciona una fecha y hora.'); return; }
+  const [date,hour] = dt.split(' ');
+  const conflicts = getOccupancyFor(date, hour).filter(x => x.key !== matchId(m) && x.court === court && court);
+  if(conflicts.length){ alert(`La ${court} ya está ocupada en ese tramo.`); return; }
+  try{
+    setButtonsDisabled(true); setSaveStatus('Guardando programación…', 'pending');
+    await workerRequest({ action:'schedule_upsert', matchId: matchId(m), schedule:{ dt, court, reprogrammed, note } });
+    state.schedule[matchId(m)] = { dt, court, reprogrammed, note, updatedAt:new Date().toISOString() };
+    renderAll(); await refreshOnlineOnce(); setSaveStatus('✅ Programación guardada', 'ok'); setTimeout(()=>setSaveStatus('', 'pending'), 2500);
+  }catch(e){ setSaveStatus('⚠️ Error al guardar programación', 'bad'); alert(e.message || String(e)); }
+  finally{ setButtonsDisabled(false); }
+}
+
+async function onClear(){
+  const idx = Number(document.getElementById("matchSelect").value || 0); const m = getDiv().matches[idx];
+  if(!confirm(`¿Borrar el resultado online de:\n\n${m.a} vs ${m.b}\n${m.dt}?`)) return;
+  try{
+    setButtonsDisabled(true); setSaveStatus("Borrando…", "pending");
+    await workerRequest({ action: "delete", matchId: matchId(m) });
+    ensureBucket(); delete state.results[state.division][matchId(m)];
+    renderAll(); await refreshOnlineOnce(); setSaveStatus("🗑️ Borrado", "ok"); setTimeout(()=>setSaveStatus("", "pending"), 2500);
+  }catch(e){ setSaveStatus("⚠️ Error al borrar", "bad"); alert(e.message || String(e)); }
+  finally{ setButtonsDisabled(false); }
+}
+
+async function onReset(){
+  try{ setButtonsDisabled(true); setSaveStatus("Actualizando…", "pending"); await refreshOnlineOnce(); setSaveStatus("✅ Actualizado", "ok"); setTimeout(()=>setSaveStatus("", "pending"), 2000); }
+  finally{ setButtonsDisabled(false); }
+}
+
+function latestResults(limit=12){
+  const items = [];
+  for(const divName of Object.keys(state.results||{})){
+    const bucket = state.results[divName] || {};
+    for(const [key, r] of Object.entries(bucket)){
+      const parts = key.split('__');
+      const [, , a, b] = parts.length >= 4 ? parts : [divName,'', key,''];
+      if(!r || typeof r !== 'object') continue;
+      items.push({
+        div: divName,
+        a, b,
+        score: `${r.s1a}-${r.s1b} / ${r.s2a}-${r.s2b}`,
+        updatedAt: r.updatedAt || ''
+      });
+    }
+  }
+  items.sort((x,y)=>(new Date(y.updatedAt||0))-(new Date(x.updatedAt||0)));
+  return items.slice(0, limit);
+}
+function renderTicker(){
+  const bar = document.getElementById('tickerBar');
+  const track = document.getElementById('tickerTrack');
+  if(!bar || !track) return;
+  const data = latestResults(12);
+  if(!data.length){
+    bar.hidden = true;
+    document.body.classList.remove('hasTicker');
+    return;
+  }
+  const chunk = data.map(x => `<div class="tickerItem"><small>${x.div}</small> · <b>${x.a}</b> ${x.score} <b>${x.b}</b>${x.updatedAt?` · <small>${fmtDate(x.updatedAt.replace('T',' ').slice(0,16))}</small>`:''}</div>`).join('');
+  track.innerHTML = chunk + chunk;
+  bar.hidden = false;
+  document.body.classList.add('hasTicker');
+}
+
+function wire(){
+  document.getElementById("saveBtn").onclick = onSave;
+  document.getElementById("saveScheduleBtn").onclick = onSaveSchedule;
+  document.getElementById("clearBtn").onclick = onClear;
+  document.getElementById("resetBtn").onclick = onReset;
+  document.getElementById('refreshBtn').onclick = onReset;
+}
+function renderAll(){ ensureBucket(); competitionBadge(); renderTabs(); renderFilters(); renderMeta(); renderCalendar(); renderList(); renderCourtOptions(); renderMatchSelect(); renderStandings(); renderPlayerStats(); renderReprograms(); renderTicker(); updateRefreshBadge(); }
+wire(); renderAll(); refreshOnlineOnce();
+</script>
+
+<div class="tickerBar" id="tickerBar" hidden>
+  <div class="tickerInner wrap" style="max-width:none">
+    <div class="tickerLabel">📣 Últimos resultados</div>
+    <div class="tickerViewport">
+      <div class="tickerTrack" id="tickerTrack"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
