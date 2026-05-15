@@ -1,0 +1,336 @@
+{
+  "1ª División": {
+    "1ª División__2026-03-05 20:00__Gonzalo Fernández__Iñigo De Las Heras Velazquez": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-03-07T08:14:41.816Z"
+    },
+    "1ª División__2026-03-03 20:00__Alejandro Yi__Enzo": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-09T08:30:02.790Z"
+    },
+    "1ª División__2026-03-09 20:00__Iñigo De Las Heras Velazquez__Nuño Estéfano Hernaiz": {
+      "s1a": 1,
+      "s1b": 6,
+      "s2a": 5,
+      "s2b": 7,
+      "updatedAt": "2026-03-09T21:06:55.086Z"
+    },
+    "1ª División__2026-03-10 20:00__Nuño Estéfano Hernaiz__Mario Garcia Blanco": {
+      "s1a": 6,
+      "s1b": 7,
+      "s2a": 1,
+      "s2b": 6,
+      "updatedAt": "2026-03-10T20:42:03.740Z"
+    },
+    "1ª División__2026-03-11 20:00__Mario Garcia Blanco__Javier Grande Tabares": {
+      "s1a": 1,
+      "s1b": 6,
+      "s2a": 2,
+      "s2b": 6,
+      "updatedAt": "2026-03-11T16:55:29.657Z"
+    },
+    "1ª División__2026-03-02 20:00__Marco Gutierrez__Alejandro Yi": {
+      "s1a": 4,
+      "s1b": 6,
+      "s2a": 6,
+      "s2b": 7,
+      "updatedAt": "2026-04-17T17:28:02.245Z"
+    },
+    "1ª División__2026-03-16 20:00__Alejandro Yi__Gonzalo Fernández": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 1,
+      "updatedAt": "2026-03-16T19:54:08.416Z"
+    },
+    "1ª División__2026-03-18 20:00__Gonzalo Fernández__Nuño Estéfano Hernaiz": {
+      "s1a": 4,
+      "s1b": 6,
+      "s2a": 6,
+      "s2b": 1,
+      "updatedAt": "2026-03-18T20:28:59.627Z"
+    },
+    "1ª División__2026-03-12 20:00__Marco Gutierrez__Enzo": {
+      "s1a": 6,
+      "s1b": 3,
+      "s2a": 6,
+      "s2b": 2,
+      "updatedAt": "2026-03-23T20:01:00.694Z"
+    },
+    "1ª División__2026-03-23 20:00__Nuño Estéfano Hernaiz__Javier Grande Tabares": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-03-24T19:03:51.790Z"
+    },
+    "1ª División__2026-03-24 20:00__Marco Gutierrez__Gonzalo Fernández": {
+      "s1a": 4,
+      "s1b": 6,
+      "s2a": 4,
+      "s2b": 6,
+      "updatedAt": "2026-03-24T21:03:40.911Z"
+    },
+    "1ª División__2026-03-19 20:00__Iñigo De Las Heras Velazquez__Mario Garcia Blanco": {
+      "s1a": 6,
+      "s1b": 3,
+      "s2a": 2,
+      "s2b": 6,
+      "updatedAt": "2026-03-26T18:20:09.134Z"
+    },
+    "1ª División__2026-03-26 20:00__Enzo__Nuño Estéfano Hernaiz": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-03-30T07:57:16.223Z"
+    },
+    "1ª División__2026-03-17 20:00__Enzo__Iñigo De Las Heras Velazquez": {
+      "s1a": 4,
+      "s1b": 6,
+      "s2a": 6,
+      "s2b": 7,
+      "updatedAt": "2026-04-07T20:19:58.217Z"
+    },
+    "1ª División__2026-04-09 20:00__Gonzalo Fernández__Javier Grande Tabares": {
+      "s1a": 2,
+      "s1b": 6,
+      "s2a": 2,
+      "s2b": 6,
+      "updatedAt": "2026-04-09T19:25:36.272Z"
+    },
+    "1ª División__2026-03-30 20:00__Gonzalo Fernández__Mario Garcia Blanco": {
+      "s1a": 3,
+      "s1b": 6,
+      "s2a": 7,
+      "s2b": 5,
+      "updatedAt": "2026-04-10T17:01:23.056Z"
+    },
+    "1ª División__2026-04-14 20:00__Alejandro Yi__Mario Garcia Blanco": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-04-14T18:15:26.419Z"
+    },
+    "1ª División__2026-04-13 20:00__Marco Gutierrez__Nuño Estéfano Hernaiz": {
+      "s1a": 6,
+      "s1b": 2,
+      "s2a": 7,
+      "s2b": 5,
+      "updatedAt": "2026-04-17T15:47:00.523Z"
+    },
+    "1ª División__2026-04-16 20:00__Marco Gutierrez__Mario Garcia Blanco": {
+      "s1a": 6,
+      "s1b": 3,
+      "s2a": 3,
+      "s2b": 6,
+      "updatedAt": "2026-04-17T17:29:04.812Z"
+    },
+    "1ª División__2026-04-07 20:00__Alejandro Yi__Nuño Estéfano Hernaiz": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-04-21T07:28:58.697Z"
+    },
+    "1ª División__2026-04-20 20:00__Alejandro Yi__Javier Grande Tabares": {
+      "s1a": 3,
+      "s1b": 6,
+      "s2a": 2,
+      "s2b": 6,
+      "updatedAt": "2026-04-21T16:26:13.219Z"
+    },
+    "1ª División__2026-04-21 20:00__Marco Gutierrez__Javier Grande Tabares": {
+      "s1a": 1,
+      "s1b": 6,
+      "s2a": 6,
+      "s2b": 7,
+      "updatedAt": "2026-04-21T19:07:03.109Z"
+    },
+    "1ª División__2026-04-01 20:00__Marco Gutierrez__Iñigo De Las Heras Velazquez": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-04-28T17:44:01.695Z"
+    },
+    "1ª División__2026-04-08 20:00__Enzo__Mario Garcia Blanco": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-05-03T19:39:22.148Z"
+    }
+  },
+  "2ª División": {
+    "2ª División__2026-03-12 19:00__Javier Martínez Sainz__Jorge Grande Tabares": {
+      "s1a": 1,
+      "s1b": 6,
+      "s2a": 3,
+      "s2b": 6,
+      "updatedAt": "2026-03-08T09:11:10.920Z"
+    },
+    "2ª División__2026-03-05 19:00__María Millanes__Bosco Millanes": {
+      "s1a": 4,
+      "s1b": 6,
+      "s2a": 5,
+      "s2b": 7,
+      "updatedAt": "2026-03-09T08:23:43.135Z"
+    },
+    "2ª División__2026-03-04 19:00__Jorge Grande Tabares__María Millanes": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-10T19:11:05.926Z"
+    },
+    "2ª División__2026-03-10 19:00__Andrés González Fernández__Pablo Muñiz Sendino": {
+      "s1a": 6,
+      "s1b": 4,
+      "s2a": 4,
+      "s2b": 6,
+      "updatedAt": "2026-03-11T18:42:16.450Z"
+    },
+    "2ª División__2026-03-18 19:00__María Millanes__Andrés González Fernández": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-03-16T09:34:02.924Z"
+    },
+    "2ª División__2026-03-16 19:00__Jaime Herrera Sánchez__María Millanes": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-16T09:34:34.971Z"
+    },
+    "2ª División__2026-04-09 19:00__María Millanes__Samuel González Fernández": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-03-16T09:35:27.283Z"
+    },
+    "2ª División__2026-03-30 19:00__María Millanes__Pablo Muñiz Sendino": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-03-16T09:36:03.126Z"
+    },
+    "2ª División__2026-03-24 19:00__Javier Martínez Sainz__María Millanes": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-16T09:40:08.930Z"
+    },
+    "2ª División__2026-03-09 19:00__Bosco Millanes__Andrés González Fernández": {
+      "s1a": 4,
+      "s1b": 6,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-16T18:38:52.022Z"
+    },
+    "2ª División__2026-03-11 19:00__Pablo Muñiz Sendino__Samuel González Fernández": {
+      "s1a": 6,
+      "s1b": 4,
+      "s2a": 6,
+      "s2b": 1,
+      "updatedAt": "2026-03-16T20:19:34.825Z"
+    },
+    "2ª División__2026-03-17 19:00__Jorge Grande Tabares__Bosco Millanes": {
+      "s1a": 6,
+      "s1b": 0,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-17T19:27:05.939Z"
+    },
+    "2ª División__2026-03-19 19:00__Bosco Millanes__Pablo Muñiz Sendino": {
+      "s1a": 6,
+      "s1b": 3,
+      "s2a": 4,
+      "s2b": 6,
+      "updatedAt": "2026-03-19T19:11:56.050Z"
+    },
+    "2ª División__2026-03-23 19:00__Andrés González Fernández__Samuel González Fernández": {
+      "s1a": 6,
+      "s1b": 2,
+      "s2a": 6,
+      "s2b": 3,
+      "updatedAt": "2026-03-23T20:01:15.703Z"
+    },
+    "2ª División__2026-04-08 19:00__Jorge Grande Tabares__Pablo Muñiz Sendino": {
+      "s1a": 6,
+      "s1b": 3,
+      "s2a": 6,
+      "s2b": 3,
+      "updatedAt": "2026-03-24T19:56:47.774Z"
+    },
+    "2ª División__2026-03-26 19:00__Jorge Grande Tabares__Andrés González Fernández": {
+      "s1a": 6,
+      "s1b": 1,
+      "s2a": 6,
+      "s2b": 1,
+      "updatedAt": "2026-03-26T20:40:05.571Z"
+    },
+    "2ª División__2026-03-31 19:00__Bosco Millanes__Samuel González Fernández": {
+      "s1a": 6,
+      "s1b": 1,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-03-31T17:02:46.480Z"
+    },
+    "2ª División__2026-04-07 19:00__Jaime Herrera Sánchez__Andrés González Fernández": {
+      "s1a": 6,
+      "s1b": 1,
+      "s2a": 6,
+      "s2b": 0,
+      "updatedAt": "2026-04-07T18:21:27.960Z"
+    },
+    "2ª División__2026-03-02 19:00__Javier Martínez Sainz__Jaime Herrera Sánchez": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 1,
+      "s2b": 6,
+      "updatedAt": "2026-04-09T18:25:23.487Z"
+    },
+    "2ª División__2026-03-03 19:00__Jaime Herrera Sánchez__Jorge Grande Tabares": {
+      "s1a": 6,
+      "s1b": 2,
+      "s2a": 4,
+      "s2b": 6,
+      "updatedAt": "2026-04-09T20:01:00.066Z"
+    },
+    "2ª División__2026-04-01 19:00__Javier Martínez Sainz__Bosco Millanes": {
+      "s1a": 1,
+      "s1b": 6,
+      "s2a": 1,
+      "s2b": 6,
+      "updatedAt": "2026-04-10T17:07:17.952Z"
+    },
+    "2ª División__2026-03-25 19:00__Jaime Herrera Sánchez__Bosco Millanes": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-04-17T17:22:42.973Z"
+    },
+    "2ª División__2026-04-14 19:00__Jaime Herrera Sánchez__Pablo Muñiz Sendino": {
+      "s1a": 0,
+      "s1b": 6,
+      "s2a": 0,
+      "s2b": 6,
+      "updatedAt": "2026-04-21T16:59:23.073Z"
+    }
+  },
+  "liga_junio": {}
+}
