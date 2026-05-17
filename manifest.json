@@ -1,0 +1,25 @@
+{
+  "name": "1ª División Junio",
+  "short_name": "Liga Junio",
+  "description": "Liga Tenis Deportiva - 1ª División Junio",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#030713",
+  "theme_color": "#c8ff00",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
